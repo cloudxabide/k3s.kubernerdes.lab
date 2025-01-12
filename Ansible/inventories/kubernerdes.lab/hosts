@@ -1,0 +1,10 @@
+[all:vars]
+ansible_user=nvidia
+ansible_become=yes
+
+[control_plane_nodes]
+xavier-01.kubernerdes.lab ansible_host=10.10.12.211 
+
+[worker_nodes]
+xavier-02.kubernerdes.lab ansible_host=10.10.12.212 
+xavier-03.kubernerdes.lab ansible_host=10.10.12.213 

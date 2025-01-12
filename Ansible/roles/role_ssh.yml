@@ -1,0 +1,3 @@
+---
+- include: ssh-key-copy/main.yaml
+  become: yes
