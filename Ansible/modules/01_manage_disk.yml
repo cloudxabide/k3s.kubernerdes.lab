@@ -1,0 +1,12 @@
+---
+- name: Configure NVMe disk with LVM
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Create Physical Volume
+      lvg:
+        pvs: /dev/nvme0n1
+        vg: vg_nvme
+        state: present
+        
