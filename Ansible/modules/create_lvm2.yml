@@ -1,6 +1,6 @@
 ---
 - name: Configure NVMe disk with LVM
-  hosts: your_target_hosts
+  hosts: all
   become: yes
   tasks:
     - name: Install LVM2 package
