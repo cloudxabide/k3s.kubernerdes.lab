@@ -1,5 +1,5 @@
 ---
-- name: Configure NVMe disk with LVM
+- name: Configure NVMe disk a single PV 
   hosts: all
   become: yes
   tasks:
