@@ -1,14 +1,8 @@
 ---
-- name: Configure NVMe disk with LVM
+- name: Configure Volumes, Filesystems, and Mounts
   hosts: all
   become: yes
   tasks:
-
-    - name: Create Physical Volume
-      lvg:
-        pvs: /dev/nvme0n1
-        vg: vg_nvme
-        state: present
 
     - name: Create Logical Volume for Docker
       lvol:
@@ -40,22 +34,22 @@
 
     - name: Create filesystem on lv_docker
       filesystem:
-        fstype: xfs
+        fstype: ext4
         dev: /dev/vg_nvme/lv_docker
 
     - name: Create filesystem on lv_rancher
       filesystem:
-        fstype: xfs
+        fstype: ext4
         dev: /dev/vg_nvme/lv_rancher
 
     - name: Create filesystem on lv_opt
       filesystem:
-        fstype: xfs
+        fstype: ext4
         dev: /dev/vg_nvme/lv_opt
 
     - name: Create filesystem on lv_usr_local
       filesystem:
-        fstype: xfs
+        fstype: ext4
         dev: /dev/vg_nvme/lv_usr_local
 
     - name: Create mount point for Docker
@@ -82,26 +76,26 @@
       mount:
         path: /var/lib/docker
         src: /dev/vg_nvme/lv_docker
-        fstype: xfs
+        fstype: ext4
         state: mounted
 
     - name: Mount lv_rancher
       mount:
         path: /var/lib/rancher
         src: /dev/vg_nvme/lv_rancher
-        fstype: xfs
+        fstype: ext4
         state: mounted
 
     - name: Mount lv_opt
       mount:
         path: /opt
         src: /dev/vg_nvme/lv_opt
-        fstype: xfs
+        fstype: ext4
         state: mounted
 
     - name: Mount lv_usr-local
       mount:
         path: /usr/local
         src: /dev/vg_nvme/lv_usr_local
-        fstype: xfs
+        fstype: ext4
         state: mounted
