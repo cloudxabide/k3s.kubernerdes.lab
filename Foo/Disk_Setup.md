@@ -1,5 +1,6 @@
 # Disk Setup
 
+# This will be converted to a playbook once I have a better idea of all the steps/tasks that are needed
 ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "sudo df -h"
 
 ansible-playbook -i inventories/kubernerdes.lab/hosts modules/00_install_lvm2.yml
