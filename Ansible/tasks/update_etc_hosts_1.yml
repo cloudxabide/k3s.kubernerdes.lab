@@ -1,0 +1,22 @@
+---
+- name: Update /etc/hosts file
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+  gather_facts: yes  # Gather facts about the target hosts
+
+  tasks:
+    - name: Generate /etc/hosts entries
+      set_fact:
+        hosts_entries: "{{ hosts_entries | default([]) + ['%s %s %s' % (hostvars[item]['ansible_host'], item, hostvars[item]['ansible_fqdn'])] }}"
+      loop: "{{ groups['all'] }}"
+      
+    - name: Update /etc/hosts file
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          {% for entry in hosts_entries %}
+          {{ entry }}
+          {% endfor %}
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        state: present
+
