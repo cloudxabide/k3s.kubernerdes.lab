@@ -32,6 +32,6 @@ Internet Connection
 A number of the specific and opinionated items mentioned in this repo are actually quite flexible.  I have decided on a particular architecture and approach in order to make this a solution that absolutely works (tm), given that I follow all the guidance provided.
 
 ## References and Notes
-
+Some of this code brought to you by [Amazon Bedrock](https://aws.amazon.com/bedrock/) - specifically using [chat-cli](https://github.com/chat-cli/chat-cli) (Which I highly recommend - it's quite simple)
 
 (*) NOTE:  You can use this repo to deploy just a K3s cluster on the NVIDIA Jetsons (and not worry about Rancher and the subsequent AWS cost.
