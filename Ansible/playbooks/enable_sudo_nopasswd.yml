@@ -1,0 +1,28 @@
+- name: Enable sudo with no password for nvidia user
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure nvidia user exists
+      user:
+        name: nvidia
+        state: present
+
+    - name: Add nvidia user to sudo group
+      user:
+        name: nvidia
+        groups: sudo
+        append: yes
+
+    - name: Create sudoers file for nvidia user
+      copy:
+        dest: /etc/sudoers.d/nvidia
+        content: "nvidia ALL=(ALL) NOPASSWD: ALL"
+        mode: 0440
+        validate: 'visudo -cf %s'
+
+    - name: Ensure the sudoers file has correct permissions
+      file:
+        path: /etc/sudoers.d/nvidia
+        owner: root
+        group: root
+        mode: '0440'
