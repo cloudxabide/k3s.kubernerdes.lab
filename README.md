@@ -13,17 +13,18 @@ NOTE: This repo is a *rather* opinionated approach in that I am using NVIDIA Jet
 * Moderate AWS knowledge and some appetite to incur costs (*)
 
 ## Bill of Materials
-3 x [Seeed Studio - reComputer J2011-Edge AI Device with Jetson Xavier NX 8GB module](https://www.seeedstudio.com/Jetson-20-1-H1-p-5328.html) with Power Supplies  
-8-port 1GB Network Switch  
-Keyboard/Video/Mouse  
-System capable of running [Ubuntu 20.04 LTS](https://ubuntu.com/download/desktop) and [NVIDIA SDK Manager](https://developer.nvidia.com/sdk-manager)
-Internet Connection
+
+* 3 x [Seeed Studio - reComputer J2011-Edge AI Device with Jetson Xavier NX 8GB module](https://www.seeedstudio.com/Jetson-20-1-H1-p-5328.html) with Power Supplies  
+* 8-port 1GB Network Switch  
+* Keyboard/Video/Mouse  
+* System capable of running [Ubuntu 20.04 LTS](https://ubuntu.com/download/desktop) and [NVIDIA SDK Manager](https://developer.nvidia.com/sdk-manager)
+* Internet Connectivity from Jetsons (air-gapped is well out of the scope here)
 
 * NVIDIA Jetson Xavier NX Software (acquired via NVIDIA SDK Manager)
 * SUSE Rancher 
 * SUSE K3s
 * Amazon account with avialable quota run this workload
-* Some sort of VPN connectivity to AWS Transit Gateway
+* VPN connectivity to AWS Transit Gateway
 
 
 ![High Level Overview](./Images/High_Level_Overview.drawio.png)
@@ -34,4 +35,4 @@ A number of the specific and opinionated items mentioned in this repo are actual
 ## References and Notes
 Some of this code brought to you by [Amazon Bedrock](https://aws.amazon.com/bedrock/) - specifically using [chat-cli](https://github.com/chat-cli/chat-cli) (Which I highly recommend - it's quite simple)
 
-(*) NOTE:  You can use this repo to deploy just a K3s cluster on the NVIDIA Jetsons (and not worry about Rancher and the subsequent AWS cost.
+(*) NOTE:  You can use this repo to deploy just a K3s cluster on the NVIDIA Jetsons (and not worry about Rancher and the subsequent AWS cost.)
