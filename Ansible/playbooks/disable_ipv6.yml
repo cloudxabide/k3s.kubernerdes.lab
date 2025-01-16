@@ -1,0 +1,27 @@
+---
+- name: Disable IPv6 on Ubuntu 20.04
+  hosts: ubuntu_nodes
+  become: yes
+  vars:
+    sysctl_config_file: /etc/sysctl.conf
+    ipv6_sysctl_options:
+      - name: "Disable IPv6"
+        line: "net.ipv6.conf.all.disable_ipv6 = 1"
+      - name: "Disable IPv6 module"
+        line: "net.ipv6.conf.default.disable_ipv6 = 1"
+
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Add ipv6 disabling config to sysctl.conf
+      lineinfile:
+        path: "{{ sysctl_config_file }}"
+        line: "{{ item.line }}"
+        state: present
+      with_items: "{{ ipv6_sysctl_options }}"
+
+    - name: Apply sysctl configurations
+      command: sysctl -p
