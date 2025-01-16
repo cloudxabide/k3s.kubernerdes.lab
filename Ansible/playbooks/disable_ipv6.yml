@@ -1,6 +1,6 @@
 ---
 - name: Disable IPv6 on Ubuntu 20.04
-  hosts: ubuntu_nodes
+  hosts: all 
   become: yes
   vars:
     sysctl_config_file: /etc/sysctl.conf
