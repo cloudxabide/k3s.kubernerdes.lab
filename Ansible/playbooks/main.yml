@@ -1,0 +1,17 @@
+configure_nvidia_power_mode.yml
+enable_sudo_nopasswd.yml
+disable_ipv6.yml
+update_etc_hosts_1.yml
+update_os.yaml
+manage_disk.yml
+create_vols_fs.yml
+install_nvidia_prereq_pkgs.yml
+install_nvidia_container_toolkit.yml
+#update_docker_runtime_for_nvidia.yml - This is now in install_nvidia_container_toolkit.yml
+#install_nvidia_docker.yml - This is now in install_nvidia_container_toolkit.yml
+install_pytorch.yml
+
+main.yml
+update_etc_hosts_1.yml
+ssh_copy_id.yml
+example_commands.md
