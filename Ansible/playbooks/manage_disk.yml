@@ -1,8 +1,18 @@
 ---
-- name: Configure NVMe disk a single PV and install LVM2
+- name: Configure NVMe disk as single PV and install LVM2
   hosts: all
   become: yes  # This allows Ansible to use sudo
+  vars:
+    data_drive: /dev/nvme0n1
+
   tasks:
+    - name: Wipe the drive
+      command: "dd if=/dev/zero of={{ data_drive }}bs=1M count=100"
+
+    - name: Create a new partition table (GPT)
+      parted:
+        device: "{{ data_drive }}"
+        label: gpt
 
     - name: Update apt cache
       apt:
@@ -27,6 +37,6 @@
 
     - name: Create Physical Volume
       lvg:
-        pvs: /dev/nvme0n1
+        pvs: {{ data_drive }}
         vg: vg_nvme
         state: present
