@@ -37,6 +37,22 @@
           - nvidia-container-runtime
         state: present
 
+    - name: Run nvidia-ctk to configure Docker runtime
+      command: nvidia-ctk runtime configure --runtime=docker
+      register: nvidia_ctk_result
+      changed_when: nvidia_ctk_result.rc != 0
+      failed_when: false  # This prevents the playbook from failing if the command returns a non-zero exit code
+
+    - name: Display nvidia-ctk output
+      debug:
+        var: nvidia_ctk_result.stdout_lines
+      when: nvidia_ctk_result.stdout_lines is defined
+
+    - name: Display nvidia-ctk error output
+      debug:
+        var: nvidia_ctk_result.stderr_lines
+      when: nvidia_ctk_result.stderr_lines is defined
+
     - name: Restart Docker service
       systemd:
         name: docker
