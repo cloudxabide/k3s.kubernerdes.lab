@@ -51,5 +51,5 @@
 
     - name: Upgrade all packages
       apt:
-        upgrade: yes
+        upgrade: 'yes'
 
