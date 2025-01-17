@@ -3,7 +3,7 @@
 ## Purpose
 How to deploy k3s on NVIDIA Jetson Xavier NX (now featuring Ansible).
 
-NOTE: This repo is a *rather* opinionated approach in that I am using NVIDIA Jetson Xavier NX modules (with a specific disk layout that I have opted for) as well as Ansible to set them up.  That said, this is not a generic how-to on how to run K3s on NVIDIA Jetsons.
+NOTE: This repo is a *rather* opinionated approach in that I am using NVIDIA Jetson Xavier NX modules (with a specific disk layout that I have opted for) as well as Ansible to execute the set up of the devices.  That said, this is not a generic how-to on how to run K3s on NVIDIA Jetsons.
 
 ### Status
 2025-01-17 - pre-release, still being built
