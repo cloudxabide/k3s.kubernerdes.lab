@@ -55,7 +55,7 @@
 
     - name: Add NVIDIA Container Toolkit repository
       apt_repository:
-        repo: "deb dhttps://nvidia.github.io/libnvidia-container/stable/deb/arm64 /"
+        repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/arm64 /"
         # repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list "
         # repo: deb https://nvidia.github.io/nvidia-docker/l4t/stable r32.4 main
         # repo: "deb https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/arm64 /"
