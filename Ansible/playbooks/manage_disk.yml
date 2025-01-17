@@ -1,12 +1,32 @@
 ---
-- name: Configure NVMe disk a single PV 
+- name: Configure NVMe disk a single PV and install LVM2
   hosts: all
-  become: yes
+  become: yes  # This allows Ansible to use sudo
   tasks:
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Install LVM2
+      apt:
+        name: lvm2
+        state: present
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Verify LVM2 installation
+      command: lvs --version
+      register: lvs_version
+      changed_when: false
+      failed_when: lvs_version.rc != 0
+
+    - name: Display LVM2 version
+      debug:
+        var: lvs_version.stdout_lines
 
     - name: Create Physical Volume
       lvg:
         pvs: /dev/nvme0n1
         vg: vg_nvme
         state: present
-        
