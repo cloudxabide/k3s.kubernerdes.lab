@@ -6,13 +6,18 @@
     data_drive: /dev/nvme0n1
 
   tasks:
-    - name: Wipe the drive
-      command: "dd if=/dev/zero of={{ data_drive }}bs=1M count=100"
+    - name: Ensure required packages are installed
+      apt:
+        name:
+          - parted
+          - gdisk
+        state: present
 
-    - name: Create a new partition table (GPT)
-      parted:
-        device: "{{ data_drive }}"
-        label: gpt
+    - name: Wipe the drive
+      command: "dd if=/dev/zero of={{ data_drive }} bs=1M count=1000"
+
+    - name: Create a new GPT partition tabl
+      command: "parted {{ data_drive }} mklabel gpt"
 
     - name: Update apt cache
       apt:
@@ -37,6 +42,6 @@
 
     - name: Create Physical Volume
       lvg:
-        pvs: {{ data_drive }}
+        pvs: "{{ data_drive }}"
         vg: vg_nvme
         state: present
