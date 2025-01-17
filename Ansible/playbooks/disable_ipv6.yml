@@ -11,11 +11,6 @@
         line: "net.ipv6.conf.default.disable_ipv6 = 1"
 
   tasks:
-    - name: Update and upgrade apt packages
-      apt:
-        update_cache: yes
-        upgrade: dist
-
     - name: Add ipv6 disabling config to sysctl.conf
       lineinfile:
         path: "{{ sysctl_config_file }}"
