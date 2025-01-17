@@ -1,0 +1,52 @@
+---
+- name: Install NVIDIA Container Toolkit on Jetson
+  hosts: jetson
+  become: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name:
+          - curl
+          - gnupg
+        state: present
+
+    - name: Add NVIDIA Container Toolkit repository key
+      apt_key:
+        url: https://nvidia.github.io/nvidia-docker/gpgkey
+        state: present
+
+    - name: Add NVIDIA Container Toolkit repository
+      apt_repository:
+        repo: deb https://nvidia.github.io/nvidia-docker/l4t/stable r32.4 main
+        state: present
+        filename: nvidia-docker
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install NVIDIA Container Toolkit
+      apt:
+        name:
+          - nvidia-docker2
+          - nvidia-container-runtime
+        state: present
+
+    - name: Restart Docker service
+      systemd:
+        name: docker
+        state: restarted
+
+    - name: Test NVIDIA Container Toolkit installation
+      command: docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+      register: test_output
+      changed_when: false
+
+    - name: Display test output
+      debug:
+        var: test_output.stdout_lines
