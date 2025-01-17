@@ -22,7 +22,7 @@
 
     - name: Add NVIDIA Docker repository
       apt_repository:
-        repo: deb https://nvidia.github.io/nvidia-docker/ubuntu20.04/nvidia-docker.list
+        repo: "deb https://nvidia.github.io/nvidia-docker/ubuntu20.04/nvidia-docker.list /"
         state: present
         filename: nvidia-docker
 
@@ -54,7 +54,7 @@
 
     - name: Add NVIDIA Container Toolkit repository
       apt_repository:
-        repo: deb https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list
+        "repo: deb https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list /"
         # repo: deb https://nvidia.github.io/nvidia-docker/l4t/stable r32.4 main
         # repo: "deb https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/arm64 /"
         state: present
