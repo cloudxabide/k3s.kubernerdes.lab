@@ -16,7 +16,7 @@ for HOST in 1 2 3; do   ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerd
 ### Copy SSH key from management node to Jetson nodes
 TODO: Update this to automatically accept ssh fingerprint
 ```bash
-for HOST in 1 2 3; do echo "ssh-copy-id -l nvidia xavier-0$HOST.kubernerdes.lab"; done
+for HOST in 1 2 3; do echo "ssh-copy-id nvidia@xavier-0$HOST.kubernerdes.lab"; done
 ```
 
 ### Update Sudo for NOPASSWD
