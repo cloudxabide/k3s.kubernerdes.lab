@@ -45,6 +45,8 @@
           - scons
           - python3-pip
           - libopenblas-dev
+          - cmake
+          - curl
         state: present
 
     - name: Upgrade all packages
