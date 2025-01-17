@@ -1,5 +1,5 @@
 ---
-- name: Install NVIDIA Container Toolkit on Jetson
+- name: Install NVIDIA Container Toolkit and Docker on Jetson
   hosts: all 
   become: yes
 
@@ -15,16 +15,50 @@
           - gnupg
         state: present
 
-    - name: Add NVIDIA Container Toolkit repository key
+    - name: Add NVIDIA Docker GPG key
       apt_key:
         url: https://nvidia.github.io/nvidia-docker/gpgkey
         state: present
 
-    - name: Add NVIDIA Container Toolkit repository
+    - name: Add NVIDIA Docker repository
       apt_repository:
-        repo: deb https://nvidia.github.io/nvidia-docker/l4t/stable r32.4 main
+        repo: deb https://nvidia.github.io/nvidia-docker/ubuntu20.04/nvidia-docker.list
         state: present
         filename: nvidia-docker
+
+    - name: Install nvidia-docker2
+      apt:
+        name: nvidia-docker2
+        state: present
+
+    - name: Restart Docker service
+      systemd:
+        name: docker
+        state: restarted
+
+    - name: Add nvidia user to docker group
+      user:
+        name: nvidia
+        groups: docker
+        append: yes
+
+    - name: Print message
+      debug:
+        msg: "nvidia user has been added to the docker group. You may need to log out and log back in for the changes to take effect."
+
+    # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/1.13.5/install-guide.html#setting-up-docker
+    - name: Add NVIDIA Container Toolkit repository key
+      apt_key:
+        url: https://nvidia.github.io/libnvidia-container/gpgkey
+        state: present
+
+    - name: Add NVIDIA Container Toolkit repository
+      apt_repository:
+        repo: deb https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list
+        # repo: deb https://nvidia.github.io/nvidia-docker/l4t/stable r32.4 main
+        # repo: "deb https://nvidia.github.io/libnvidia-container/stable/ubuntu18.04/arm64 /"
+        state: present
+        filename: nvidia-container-toolkit
 
     - name: Update apt cache
       apt:
@@ -33,8 +67,7 @@
     - name: Install NVIDIA Container Toolkit
       apt:
         name:
-          - nvidia-docker2
-          - nvidia-container-runtime
+          - nvidia-container-toolkit
         state: present
 
     - name: Run nvidia-ctk to configure Docker runtime
