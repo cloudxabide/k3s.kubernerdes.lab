@@ -20,9 +20,9 @@
         url: https://nvidia.github.io/nvidia-docker/gpgkey
         state: present
 
-    - name: Add NVIDIA Docker repository
+    - name: Add NVIDIA Docker repository (arm64)
       apt_repository:
-        repo: "deb https://nvidia.github.io/nvidia-docker/ubuntu18.04/amd64 /"
+        repo: "deb https://nvidia.github.io/nvidia-docker/ubuntu18.04/arm64 /"
         # repo: "deb https://nvidia.github.io/nvidia-docker/ubuntu20.04/nvidia-docker.list "
         state: present
         filename: nvidia-docker
@@ -53,7 +53,7 @@
         url: https://nvidia.github.io/libnvidia-container/gpgkey
         state: present
 
-    - name: Add NVIDIA Container Toolkit repository
+    - name: Add NVIDIA Container Toolkit repository (arm64)
       apt_repository:
         repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/arm64 /"
         # repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list "
