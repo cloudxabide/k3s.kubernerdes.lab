@@ -16,6 +16,7 @@ NOTE: This repo is a *rather* opinionated approach in that I am using NVIDIA Jet
 * Moderate AWS knowledge and some appetite to incur costs (*)
 
 ## Bill of Materials
+This is not an exhaustive list (at this time).  These are the more important/obvious items.
 
 Physical Assets
 * 3 x [Seeed Studio - reComputer J2011-Edge AI Device with Jetson Xavier NX 8GB module](https://www.seeedstudio.com/Jetson-20-1-H1-p-5328.html) with Power Supplies  
