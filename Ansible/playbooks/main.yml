@@ -2,7 +2,7 @@ configure_nvidia_power_mode.yml
 enable_sudo_nopasswd.yml
 disable_ipv6.yml
 update_etc_hosts.yml
-update_os.yaml
+update_os.yml
 manage_disk.yml
 create_vols_fs.yml
 install_nvidia_prereq_pkgs.yml
