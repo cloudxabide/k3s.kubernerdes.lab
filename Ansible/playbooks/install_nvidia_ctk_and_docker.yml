@@ -1,60 +1,60 @@
 ---
 - name: Install NVIDIA Container Toolkit and Docker on Jetson
-  hosts: all 
-  become: yes
+  hosts: all
+  become: true
 
   tasks:
     - name: Update apt cache
-      apt:
-        update_cache: yes
+      ansible.builtin.apt:
+        update_cache: true
 
     - name: Install required packages
-      apt:
+      ansible.builtin.apt:
         name:
           - curl
           - gnupg
         state: present
 
     - name: Add NVIDIA Docker GPG key
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://nvidia.github.io/nvidia-docker/gpgkey
         state: present
 
     - name: Add NVIDIA Docker repository (arm64)
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: "deb https://nvidia.github.io/nvidia-docker/ubuntu18.04/arm64 /"
         # repo: "deb https://nvidia.github.io/nvidia-docker/ubuntu20.04/nvidia-docker.list "
         state: present
         filename: nvidia-docker
 
     - name: Install nvidia-docker2
-      apt:
+      ansible.builtin.apt:
         name: nvidia-docker2
         state: present
 
     - name: Restart Docker service
-      systemd:
+      ansible.builtin.systemd:
         name: docker
         state: restarted
 
     - name: Add nvidia user to docker group
-      user:
+      ansible.builtin.user:
         name: nvidia
         groups: docker
-        append: yes
+        append: true
 
     - name: Print message
-      debug:
+      ansible.builtin.debug:
         msg: "nvidia user has been added to the docker group. You may need to log out and log back in for the changes to take effect."
 
     # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/1.13.5/install-guide.html#setting-up-docker
     - name: Add NVIDIA Container Toolkit repository key
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://nvidia.github.io/libnvidia-container/gpgkey
         state: present
 
     - name: Add NVIDIA Container Toolkit repository (arm64)
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/arm64 /"
         # repo: "deb https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list "
         # repo: deb https://nvidia.github.io/nvidia-docker/l4t/stable r32.4 main
@@ -63,42 +63,41 @@
         filename: nvidia-container-toolkit
 
     - name: Update apt cache
-      apt:
-        update_cache: yes
+      ansible.builtin.apt:
+        update_cache: true
 
     - name: Install NVIDIA Container Toolkit
-      apt:
+      ansible.builtin.apt:
         name:
           - nvidia-container-toolkit
         state: present
 
     - name: Run nvidia-ctk to configure Docker runtime
-      command: nvidia-ctk runtime configure --runtime=docker
+      ansible.builtin.command: nvidia-ctk runtime configure --runtime=docker
       register: nvidia_ctk_result
       changed_when: nvidia_ctk_result.rc != 0
       failed_when: false  # This prevents the playbook from failing if the command returns a non-zero exit code
 
     - name: Display nvidia-ctk output
-      debug:
+      ansible.builtin.debug:
         var: nvidia_ctk_result.stdout_lines
       when: nvidia_ctk_result.stdout_lines is defined
 
     - name: Display nvidia-ctk error output
-      debug:
+      ansible.builtin.debug:
         var: nvidia_ctk_result.stderr_lines
       when: nvidia_ctk_result.stderr_lines is defined
 
     - name: Restart Docker service
-      systemd:
+      ansible.builtin.systemd:
         name: docker
         state: restarted
 
     - name: Test NVIDIA Container Toolkit installation
-      # command: docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
-      command: docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+      ansible.builtin.command: "docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi"
       register: test_output
       changed_when: false
 
     - name: Display test output
-      debug:
+      ansible.builtin.debug:
         var: test_output.stdout_lines
