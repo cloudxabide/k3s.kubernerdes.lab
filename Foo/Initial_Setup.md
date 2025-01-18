@@ -54,6 +54,4 @@ Prereqs and assumptions:
 ```bash
 ansible-inventory -i inventories/kubernerdes.lab/hosts --list -y
 ansible -i inventories/kubernerdes.lab/hosts all -m ping
-
-
 ```
