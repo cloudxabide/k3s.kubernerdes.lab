@@ -5,9 +5,10 @@
   gather_facts: yes  # Gather facts about the target hosts
 
   tasks:
-    - name: Set hostname based on ansible_host
-      hostname:
+    - name: Set a hostname specifying strategy
+      ansible.builtin.hostname:
         name: "{{ ansible_host }}"
+      register: hostname_result
 
     - name: Generate /etc/hosts entries
       set_fact:
