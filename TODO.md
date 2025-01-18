@@ -1,5 +1,7 @@
 # Todo
 
+Add user mansible (my ansible) with a home directory outside of /home
+
 consolidate the 2 different nvidia playbooks 
 - docker
 - container toolkit 

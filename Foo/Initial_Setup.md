@@ -1,7 +1,7 @@
 # pre-req initial steps
 
 ## Purpose
-I created this as steps needed to get the nodes with newly installed OS ready for Ansible updates
+I created this as there are steps needed to get the nodes with newly installed OS ready for Ansible updates.  
 
 * Configure SSH keys for nvidia user to all the hosts
 * SSH to host and add Ansible User with home directory not in /home (there is a reason)
