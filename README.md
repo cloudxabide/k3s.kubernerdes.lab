@@ -9,10 +9,12 @@ NOTE: This repo is a *rather* opinionated approach in that I am using NVIDIA Jet
 2025-01-17 - pre-release, still being built
 
 ## Prerequisites
-* Fairly strong Linux background or knowledge.  And not because you will need to create anything with Linux skills, but moreso that you understand what I am doing
+* Fairly strong Linux background or knowledge.  And not because you will need to create anything with Linux skills, but moreso that you understand the steps/tasks called out in this repo .
+
 * Basic familiarity with managing NVIDIA Jetson devices
   * How to set jumpers
   * How to connect to devices via USB in order to flash NVIDIA devices
+  * How to flash the devic
 * Moderate AWS knowledge and some appetite to incur costs (*)
 
 ## Bill of Materials
