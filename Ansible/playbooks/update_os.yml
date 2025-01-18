@@ -3,7 +3,7 @@
   hosts: all
   become: true
   tasks:
-    - name: Update ansible.builtin.apt cache
+    - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 3600
