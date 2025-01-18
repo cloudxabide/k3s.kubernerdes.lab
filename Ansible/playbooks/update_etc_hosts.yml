@@ -12,7 +12,7 @@
 
     - name: Generate /etc/hosts entries
       set_fact:
-        hosts_entries: "{{ hosts_entries | default([]) + ['%s %s %s' % (hostvars[item]['ansible_host'], item, hostvars[item]['ansible_fqdn'])] }}"
+        hosts_entries: "{{ hosts_entries | default([]) + ['%s %s %s' % (hostvars[item]['ansible_host'], item, hostvars[item]['inventory_hostname_short'])] }}"
       loop: "{{ groups['all'] }}"
       
     - name: Update /etc/hosts file
