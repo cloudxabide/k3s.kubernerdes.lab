@@ -21,7 +21,7 @@
     - name: Create a new GPT partition table
       ansible.builtin.command: "parted {{ data_drive }} mklabel gpt"
       register: drive_label_created
-      changed_when: ve_label_created.rc != 0
+      changed_when: drive_label_created.rc != 0
 
     - name: Update apt cache
       ansible.builtin.apt:
