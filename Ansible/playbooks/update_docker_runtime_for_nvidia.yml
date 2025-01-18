@@ -1,17 +1,17 @@
 ---
 - name: Update Docker daemon configuration for NVIDIA
   hosts: all
-  become: yes  # This allows Ansible to use sudo
+  become: true  # This allows Ansible to use sudo
 
   tasks:
     - name: Ensure /etc/docker directory exists
-      file:
+      ansible.builtin.file:
         path: /etc/docker
         state: directory
         mode: '0755'
 
     - name: Update /etc/docker/daemon.json
-      copy:
+      ansible.builtin.copy:
         content: |
           {
             "default-runtime": "nvidia",
@@ -28,6 +28,7 @@
 
   handlers:
     - name: Restart Docker
-      service:
+      ansible.builtin.service:
         name: docker
         state: restarted
+...
