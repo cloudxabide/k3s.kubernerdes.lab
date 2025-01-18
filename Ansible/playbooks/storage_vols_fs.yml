@@ -1,102 +1,114 @@
 ---
 - name: Configure Volumes, Filesystems, and Mounts
   hosts: all
-  become: yes
+  become: true
   tasks:
 
     - name: Create Logical Volume for Docker
-      lvol:
+      community.general.lvol:
         vg: vg_nvme
         lv: lv_docker
         size: 25g
         state: present
 
     - name: Create Logical Volume for Rancher
-      lvol:
+      community.general.lvol:
         vg: vg_nvme
         lv: lv_rancher
         size: 25g
         state: present
 
     - name: Create Logical Volume for Opt
-      lvol:
+      community.general.lvol:
         vg: vg_nvme
         lv: lv_opt
         size: 15g
         state: present
 
-    - name: Create Logical Volume for usr_local 
-      lvol:
+    - name: Create Logical Volume for usr_local
+      community.general.lvol:
         vg: vg_nvme
         lv: lv_usr_local
         size: 10g
         state: present
 
     - name: Create filesystem on lv_docker
-      filesystem:
+      community.general.filesystem:
         fstype: ext4
         dev: /dev/vg_nvme/lv_docker
 
     - name: Create filesystem on lv_rancher
-      filesystem:
+      community.general.filesystem:
         fstype: ext4
         dev: /dev/vg_nvme/lv_rancher
 
     - name: Create filesystem on lv_opt
-      filesystem:
+      community.general.filesystem:
         fstype: ext4
         dev: /dev/vg_nvme/lv_opt
 
     - name: Create filesystem on lv_usr_local
-      filesystem:
+      community.general.filesystem:
         fstype: ext4
         dev: /dev/vg_nvme/lv_usr_local
 
     - name: Create mount point for Docker
-      file:
+      ansible.builtin.file:
         path: /var/lib/docker
         state: directory
+        mode: '0755'
+        owner: root
+        group: root
 
     - name: Create mount point for Rancher
-      file:
+      ansible.builtin.file:
         path: /var/lib/rancher
         state: directory
+        mode: '0755'
+        owner: root
+        group: root
 
-    - name: Create mount point for Opt 
-      file:
+    - name: Create mount point for Opt
+      ansible.builtin.file:
         path: /opt
         state: directory
+        mode: '0755'
+        owner: root
+        group: root
 
-    - name: Create mount point for usr_local 
-      file:
+    - name: Create mount point for usr_local
+      ansible.builtin.file:
         path: /usr/local
         state: directory
+        mode: '0755'
+        owner: root
+        group: root
 
     - name: Mount lv_docker
-      mount:
+      ansible.posix.mount:
         path: /var/lib/docker
         src: /dev/vg_nvme/lv_docker
         fstype: ext4
         state: mounted
 
     - name: Mount lv_rancher
-      mount:
+      ansible.posix.mount:
         path: /var/lib/rancher
         src: /dev/vg_nvme/lv_rancher
         fstype: ext4
         state: mounted
 
     - name: Mount lv_opt
-      mount:
+      ansible.posix.mount:
         path: /opt
         src: /dev/vg_nvme/lv_opt
         fstype: ext4
         state: mounted
 
     - name: Mount lv_usr-local
-      mount:
+      ansible.posix.mount:
         path: /usr/local
         src: /dev/vg_nvme/lv_usr_local
         fstype: ext4
         state: mounted
-
+...
