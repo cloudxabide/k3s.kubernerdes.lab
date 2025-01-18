@@ -1,8 +1,8 @@
 ---
 - name: Update /etc/hosts file
   hosts: all
-  become: yes  # Run tasks with sudo privileges
-  gather_facts: yes  # Gather facts about the target hosts
+  become: true  # Run tasks with sudo privileges
+  gather_facts: true  # Gather facts about the target hosts
 
   tasks:
     - name: Set a hostname specifying strategy
@@ -11,12 +11,12 @@
       register: hostname_result
 
     - name: Generate /etc/hosts entries
-      set_fact:
+      ansible.builtin.set_fact:
         hosts_entries: "{{ hosts_entries | default([]) + ['%s %s %s' % (hostvars[item]['ansible_host'], item, hostvars[item]['inventory_hostname_short'])] }}"
       loop: "{{ groups['all'] }}"
-      
+
     - name: Update /etc/hosts file
-      blockinfile:
+      ansible.builtin.blockinfile:
         path: /etc/hosts
         block: |
           {% for entry in hosts_entries %}
@@ -24,4 +24,4 @@
           {% endfor %}
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
         state: present
-
+...
