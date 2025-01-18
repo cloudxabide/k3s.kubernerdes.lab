@@ -7,7 +7,7 @@
   tasks:
     - name: Set hostname based on ansible_host
       hostname:
-      name: "{{ ansible_host }}"
+        name: "{{ ansible_host }}"
 
     - name: Generate /etc/hosts entries
       set_fact:
