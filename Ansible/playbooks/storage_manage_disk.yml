@@ -16,12 +16,12 @@
     - name: Wipe the drive
       ansible.builtin.command: "dd if=/dev/zero of={{ data_drive }} bs=1M count=1000"
       register: drive_wiped
-      changed_when: my_output.rc != 0
+      changed_when: drive_wiped.rc != 0
 
     - name: Create a new GPT partition table
       ansible.builtin.command: "parted {{ data_drive }} mklabel gpt"
       register: drive_label_created
-      changed_when: my_output.rc != 0
+      changed_when: ve_label_created.rc != 0
 
     - name: Update apt cache
       ansible.builtin.apt:
