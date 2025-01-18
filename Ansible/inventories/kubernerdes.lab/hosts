@@ -1,5 +1,5 @@
 [all:vars]
-ansible_user=nvidia
+ansible_user=mansible
 ansible_become=yes
 
 [control_plane_nodes]
