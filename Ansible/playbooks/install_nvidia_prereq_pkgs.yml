@@ -1,15 +1,15 @@
 ---
 - name: Install packages on Ubuntu
   hosts: all
-  become: yes  # This allows Ansible to use sudo
+  become: true  # This allows Ansible to use sudo
 
   tasks:
     - name: Update apt cache
-      apt:
-        update_cache: 'yes'
+      ansible.builtin.apt:
+        update_cache: 'true'
 
     - name: Install required packages
-      apt:
+      ansible.builtin.apt:
         name:
           - autoconf
           - bc
@@ -50,6 +50,6 @@
         state: present
 
     - name: Upgrade all packages
-      apt:
-        upgrade: 'yes'
-
+      ansible.builtin.apt:
+        upgrade: safe
+...
