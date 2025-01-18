@@ -8,21 +8,21 @@
       lvol:
         vg: vg_nvme
         lv: lv_docker
-        size: 40g
+        size: 25g
         state: present
 
     - name: Create Logical Volume for Rancher
       lvol:
         vg: vg_nvme
         lv: lv_rancher
-        size: 40g
+        size: 25g
         state: present
 
     - name: Create Logical Volume for Opt
       lvol:
         vg: vg_nvme
         lv: lv_opt
-        size: 20g
+        size: 15g
         state: present
 
     - name: Create Logical Volume for usr_local 
@@ -30,6 +30,13 @@
         vg: vg_nvme
         lv: lv_usr_local
         size: 10g
+        state: present
+
+    - name: Create Logical Volume for Home 
+      lvol:
+        vg: vg_nvme
+        lv: lv_home
+        size: 20g
         state: present
 
     - name: Create filesystem on lv_docker
@@ -52,6 +59,11 @@
         fstype: ext4
         dev: /dev/vg_nvme/lv_usr_local
 
+    - name: Create filesystem on lv_home
+      filesystem:
+        fstype: ext4
+        dev: /dev/vg_nvme/lv_home
+
     - name: Create mount point for Docker
       file:
         path: /var/lib/docker
@@ -70,6 +82,11 @@
     - name: Create mount point for usr_local 
       file:
         path: /usr/local
+        state: directory
+
+    - name: Create mount point for Home
+      file:
+        path: /home
         state: directory
 
     - name: Mount lv_docker
@@ -97,5 +114,12 @@
       mount:
         path: /usr/local
         src: /dev/vg_nvme/lv_usr_local
+        fstype: ext4
+        state: mounted
+
+    - name: Mount lv_home
+      mount:
+        path: /home
+        src: /dev/vg_nvme/lv_home
         fstype: ext4
         state: mounted
