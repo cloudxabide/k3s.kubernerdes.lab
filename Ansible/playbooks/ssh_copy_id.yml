@@ -1,9 +1,0 @@
----
-- name: Copy Ssh Key | copying ssh key to remote host
-  authorized_key:
-     user: "nvidia"
-     state: present
-     key: "{{ lookup('file', item) }}"
-  with_fileglob:
-  - id_ecdsa-kubernerdes.lab
-  become: true
