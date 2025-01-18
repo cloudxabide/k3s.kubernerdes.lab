@@ -1,62 +1,69 @@
 ---
 - name: Configure Volume, Filesystem, and Mount for /home
   hosts: all
-  become: yes
+  become: true
   tasks:
 
     - name: Create Logical Volume for Home
-      lvol:
+      community.general.lvol:
         vg: vg_nvme
         lv: lv_home
         size: 20g
         state: present
 
     - name: Create filesystem on lv_home
-      filesystem:
+      community.general.filesystem:
         fstype: ext4
         dev: /dev/vg_nvme/lv_home
 
     - name: Create a temporary mount point
-      file:
+      ansible.builtin.file:
         path: /mnt/newhome
         state: directory
+        mode: '0755'
+        owner: root
+        group: root
 
     - name: Mount lv_home in temporary filesystem
-      mount:
+      ansible.posix.mount:
         path: /mnt/newhome
         src: /dev/vg_nvme/lv_home
         fstype: ext4
         state: mounted
 
     - name: Copy multiple Directories
-      copy:
+      ansible.builtin.copy:
         src: "{{ item.src }}"
         dest: "{{ item.dest }}"
         mode: "{{ item.mode }}"
-        remote_src: yes
+        remote_src: true
       with_items:
-        - { src: '/home/',dest: '/mnt/newhome/',mode: preserve}
+        - { src: '/home/', dest: '/mnt/newhome/', mode: preserve }
 
     - name: Unmount the temporary mount point
-      mount:
+      ansible.posix.mount:
         path: /mnt/newhome
         state: unmounted
 
     - name: Remove the temporary mount point
-      file:
+      ansible.builtin.file:
         path: /mnt/newhome
         state: absent
 
     - name: Backup original /home
-      command: mv /home /home.bak
+      ansible.builtin.command: mv /home /home.bak
+      register: home_backed_up
+      changed_when: my_output.rc != 0
 
     - name: Create mount point for Home
-      file:
+      ansible.builtin.file:
         path: /home
         state: directory
-
+        mode: '0755'
+        owner: root
+        group: root
     - name: Mount Home (new)
-      mount:
+      ansible.posix.mount:
         path: /home
         src: /dev/vg_nvme/lv_home
         fstype: ext4
