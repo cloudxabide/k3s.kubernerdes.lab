@@ -127,12 +127,14 @@
         fstype: ext4
         state: mounted
 
-    - name: Synchronize data from original /home to new volume
-      synchronize:
-        src: /home/
-        dest: /mnt/newhome/
-        archive: yes
-        recursive: yes
+    - name: Copy multiple Directories
+      copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: "{{ item.mode }}"
+        remote_src: yes
+      with_items:
+        - { src: '/home/',dest: '/mnt/newhome/',mode: preserve}
 
     - name: Unmount the temporary mount point
       mount:
