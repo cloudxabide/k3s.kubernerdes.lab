@@ -16,7 +16,7 @@
     - name: Wipe the drive
       command: "dd if=/dev/zero of={{ data_drive }} bs=1M count=1000"
 
-    - name: Create a new GPT partition tabl
+    - name: Create a new GPT partition table
       command: "parted {{ data_drive }} mklabel gpt"
 
     - name: Update apt cache
