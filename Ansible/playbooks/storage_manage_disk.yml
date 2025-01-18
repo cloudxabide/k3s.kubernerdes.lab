@@ -1,47 +1,51 @@
 ---
 - name: Configure NVMe disk as single PV and install LVM2
   hosts: all
-  become: yes  # This allows Ansible to use sudo
+  become: true  # This allows Ansible to use sudo
   vars:
     data_drive: /dev/nvme0n1
 
   tasks:
     - name: Ensure required packages are installed
-      apt:
+      ansible.builtin.apt:
         name:
           - parted
           - gdisk
         state: present
 
     - name: Wipe the drive
-      command: "dd if=/dev/zero of={{ data_drive }} bs=1M count=1000"
+      ansible.builtin.command: "dd if=/dev/zero of={{ data_drive }} bs=1M count=1000"
+      register: drive_wiped
+      changed_when: my_output.rc != 0
 
     - name: Create a new GPT partition table
-      command: "parted {{ data_drive }} mklabel gpt"
+      ansible.builtin.command: "parted {{ data_drive }} mklabel gpt"
+      register: drive_label_created
+      changed_when: my_output.rc != 0
 
     - name: Update apt cache
-      apt:
-        update_cache: yes
+      ansible.builtin.apt:
+        update_cache: true
       when: ansible_distribution == 'Ubuntu'
 
     - name: Install LVM2
-      apt:
+      ansible.builtin.apt:
         name: lvm2
         state: present
       when: ansible_distribution == 'Ubuntu'
 
     - name: Verify LVM2 installation
-      command: lvs --version
+      ansible.builtin.command: lvs --version
       register: lvs_version
       changed_when: false
       failed_when: lvs_version.rc != 0
 
     - name: Display LVM2 version
-      debug:
+      ansible.builtin.debug:
         var: lvs_version.stdout_lines
 
     - name: Create Physical Volume
-      lvg:
+      community.general.lvg:
         pvs: "{{ data_drive }}"
         vg: vg_nvme
         state: present
