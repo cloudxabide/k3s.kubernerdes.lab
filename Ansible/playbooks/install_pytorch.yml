@@ -1,21 +1,21 @@
 ---
 - name: Install NVIDIA NetworkX, PyTorch, torchvision, and torchaudio
   hosts: all
-  become: yes  # This allows Ansible to use sudo for elevated privileges if needed
+  become: true  # This allows Ansible to use sudo for elevated privileges if needed
 
   tasks:
     - name: Ensure pip is installed
-      package:
+      ansible.builtin.package:
         name: python3-pip
         state: present
 
     - name: Install NetworkX 3.1
-      pip:
+      ansible.builtin.pip:
         name: networkx==3.1
         state: present
 
     - name: Install PyTorch, torchvision, and torchaudio
-      pip:
+      ansible.builtin.pip:
         name:
           - torch
           - torchvision
@@ -25,5 +25,5 @@
       register: pip_result
 
     - name: Display pip install result
-      debug:
+      ansible.builtin.debug:
         var: pip_result
