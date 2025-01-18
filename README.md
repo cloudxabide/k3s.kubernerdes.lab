@@ -9,7 +9,7 @@ NOTE: This repo is a *rather* opinionated approach in that I am using NVIDIA Jet
 2025-01-17 - pre-release, still being built
 
 ## Prerequisites
-* Fairly strong Linux background or knowledge.  And not because you will need to create anything with Linux skills, but moreso that you understand the steps/tasks called out in this repo .
+* Fairly strong Linux background or knowledge.  And not because you will need to create anything with Linux skills, but moreso that you understand the steps/tasks called out in this repo.
 
 * Basic familiarity with managing NVIDIA Jetson devices
   * How to set jumpers
@@ -22,7 +22,7 @@ This is not an exhaustive list (at this time).  These are the more important/obv
 
 Physical Assets
 * 3 x [Seeed Studio - reComputer J2011-Edge AI Device with Jetson Xavier NX 8GB module](https://www.seeedstudio.com/Jetson-20-1-H1-p-5328.html) with Power Supplies  
-* 8-port 1GB Network Switch  
+* 5-port 1GB Network Switch and cables (4 x host + 1 x uplink)
 * Keyboard/Video/Mouse  
 * System capable of running [Ubuntu 20.04 LTS](https://ubuntu.com/download/desktop) and [NVIDIA SDK Manager](https://developer.nvidia.com/sdk-manager) to flash the NVIDIA Jetson Xavier modules
 * Internet Connectivity from Jetsons (while air-gapped is possible, it is well out of the scope here)
