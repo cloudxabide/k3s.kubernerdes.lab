@@ -32,13 +32,6 @@
         size: 10g
         state: present
 
-    - name: Create Logical Volume for Home 
-      lvol:
-        vg: vg_nvme
-        lv: lv_home
-        size: 20g
-        state: present
-
     - name: Create filesystem on lv_docker
       filesystem:
         fstype: ext4
@@ -59,11 +52,6 @@
         fstype: ext4
         dev: /dev/vg_nvme/lv_usr_local
 
-    - name: Create filesystem on lv_home
-      filesystem:
-        fstype: ext4
-        dev: /dev/vg_nvme/lv_home
-
     - name: Create mount point for Docker
       file:
         path: /var/lib/docker
@@ -82,11 +70,6 @@
     - name: Create mount point for usr_local 
       file:
         path: /usr/local
-        state: directory
-
-    - name: Create mount point for Home
-      file:
-        path: /home
         state: directory
 
     - name: Mount lv_docker
@@ -117,7 +100,59 @@
         fstype: ext4
         state: mounted
 
-    - name: Mount lv_home
+
+# /home has to be treated differently
+
+    - name: Create Logical Volume for Home
+      lvol:
+        vg: vg_nvme
+        lv: lv_home
+        size: 20g
+        state: present
+
+    - name: Create filesystem on lv_home
+      filesystem:
+        fstype: ext4
+        dev: /dev/vg_nvme/lv_home
+
+    - name: Create a temporary mount point
+      file:
+        path: /mnt/newhome
+        state: directory
+
+    - name: Mount lv_home in temporary filesystem
+      mount:
+        path: /mnt/newhome
+        src: /dev/vg_nvme/lv_home
+        fstype: ext4
+        state: mounted
+
+    - name: Synchronize data from original /home to new volume
+      synchronize:
+        src: /home/
+        dest: /mnt/newhome/
+        archive: yes
+        recursive: yes
+
+    - name: Unmount the temporary mount point
+      mount:
+        path: /mnt/newhome
+        state: unmounted
+
+    - name: Remove the temporary mount point
+      file:
+        path: /mnt/newhome
+        state: absent
+
+    - name: Backup original /home
+      command: mv /home /home.bak
+
+    - name: Create mount point for Home
+      file:
+        path: /home
+        state: directory
+
+    - name: Mount Home (new)
       mount:
         path: /home
         src: /dev/vg_nvme/lv_home
