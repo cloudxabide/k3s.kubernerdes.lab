@@ -1,21 +1,21 @@
 ---
 - name: Generic OS Update and Config tasks
   hosts: all
-  become: yes
+  become: true
   tasks:
-    - name: Update apt cache
-      apt:
-        update_cache: yes
+    - name: Update ansible.builtin.apt cache
+      ansible.builtin.apt:
+        update_cache: true
         cache_valid_time: 3600
 
     - name: Upgrade all packages
-      apt:
+      ansible.builtin.apt:
         upgrade: dist
-        autoremove: yes
-        autoclean: yes
+        autoremove: true
+        autoclean: true
 
     - name: Remove LibreOffice packages
-      apt:
+      ansible.builtin.apt:
         name:
           - libreoffice-core
           - libreoffice-common
@@ -29,11 +29,11 @@
           - libreoffice-gtk3
           - libreoffice-style-*
         state: absent
-        purge: yes
-        autoremove: yes
+        purge: true
+        autoremove: true
 
     - name: Remove LibreOffice configuration files
-      file:
+      ansible.builtin.file:
         path: "{{ item }}"
         state: absent
       with_items:
@@ -41,25 +41,24 @@
         - /home/{{ ansible_user }}/.libreoffice
 
     - name: Clean up APT
-      apt:
-        autoclean: yes
+      ansible.builtin.apt:
+        autoclean: true
 
     - name: Remove orphaned packages
-      apt:
-        autoremove: yes
+      ansible.builtin.apt:
+        autoremove: true
 
     - name: Notify user about removal
-      debug:
+      ansible.builtin.debug:
         msg: "LibreOffice has been removed from the system."
 
     - name: Check if a reboot is required
-      register: reboot_required_file
-      stat:
+      ansible.builtin.stat:
         path: /var/run/reboot-required
-        get_md5: no
+      register: reboot_required_file
 
     - name: Reboot the server if required
-      reboot:
+      ansible.builtin.reboot:
         msg: "Reboot initiated by Ansible due to kernel updates"
         connect_timeout: 5
         reboot_timeout: 300
@@ -69,4 +68,4 @@
       when: reboot_required_file.stat.exists
 
     - name: Print upgrade complete message
-      debug:
+      ansible.builtin.debug:
