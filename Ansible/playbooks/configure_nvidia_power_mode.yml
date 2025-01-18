@@ -14,7 +14,7 @@
       ansible.builtin.command: nvpmodel -q
       register: verify_result
       changed_when: false
-      failed_when: "'NVPM CURRENT MODE: 8' not in verify_result.stdout"
+      failed_when: "'MODE_20W_6CORE' not in verify_result.stdout"
 
     - name: Display current power mode
       ansible.builtin.debug:
