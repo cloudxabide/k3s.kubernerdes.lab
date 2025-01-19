@@ -14,12 +14,9 @@ I need to figure out how to get these initial tasks knocked out in a more scalab
 ## Commands and Tasks
 ### Cleanup existing keys (because I rebuild my environemnt quite frequently)
 ```bash
-for HOST in 1 2 3
-do 
-  ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "10.10.12.21${HOST}"
-  ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}.kubernerdes.lab"
-  ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}"
-done
+for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "10.10.12.21${HOST}"; done
+for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}.kubernerdes.lab"; done
+for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}"; done
 ```
 
 ### Copy SSH key from management node to Jetson nodes
@@ -49,7 +46,9 @@ done
 echo "# Note: This is about to prompt you for your mansible user's password."
 HOSTS=" 1 2 3"
 for HOST in 1 2 3; do ssh-copy-id mansible@xavier-0${HOST}.kubernerdes.lab; done
-for HOST in 1 2 3; do ssh -t mansible@xavier-0${HOST}.kubernerdes.lab "sudo uptime"; done
+for HOST in 1 2 3; do ssh -o StrictHostKeyChecking=accept-new -t mansible@xavier-0${HOST}.kubernerdes.lab "sudo uptime"; done
+for HOST in 1 2 3; do ssh -o StrictHostKeyChecking=accept-new -t mansible@xavier-0${HOST} "sudo uptime"; done
+for HOST in 1 2 3; do ssh -o StrictHostKeyChecking=accept-new -t mansible@10.10.12.21${HOST} "sudo uptime"; done
 ```
 
 ### Test with Ansible ad-hoc command
