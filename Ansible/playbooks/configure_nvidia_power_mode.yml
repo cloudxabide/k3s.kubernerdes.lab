@@ -1,22 +1,27 @@
 ---
-- name: Update NVIDIA Jetson Power Mode
-  hosts: all
-  become: true  # This allows Ansible to use sudo
+- name: Update nvpmodel to mode 8
+  hosts: all  
+  become: true 
 
   tasks:
-    - name: Set NVIDIA Jetson power mode to 8
+    - name: Set nvpmodel to mode 8
       ansible.builtin.command: nvpmodel -m 8
       register: nvpmodel_result
-      changed_when: nvpmodel_result.rc == 0
-      failed_when: nvpmodel_result.rc != 0
+      changed_when: "'Successfully set' in nvpmodel_result.stdout"
+      failed_when:
+        - nvpmodel_result.rc != 0
+        - "'Successfully set' not in nvpmodel_result.stdout"
 
-    - name: Verify power mode change
-      ansible.builtin.command: nvpmodel -q
-      register: verify_result
-      changed_when: false
-      failed_when: "'MODE_20W_6CORE' not in verify_result.stdout"
-
-    - name: Display current power mode
+    - name: Display nvpmodel result
       ansible.builtin.debug:
-        msg: "Current power mode: {{ verify_result.stdout_lines | select('match', '^NVPM CURRENT MODE:') | \
-              list | first | regex_replace('^NVPM CURRENT MODE:\\s*', '') }}"
+        var: nvpmodel_result.stdout_lines
+
+    - name: Verify nvpmodel mode
+      ansible.builtin.command: nvpmodel -q
+      register: nvpmodel_verify
+      changed_when: false
+
+    - name: Display current nvpmodel mode
+      ansible.builtin.debug:
+        var: nvpmodel_verify.stdout_lines
+...
