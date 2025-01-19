@@ -21,4 +21,20 @@ To utilize the NVIDIA SDK Manager to flash the devices, you need Ubuntu 20.04.  
 #### Solution
 I have found that using a KMV-based VM is acceptable.  There *are* some quirks, but no show-stoppers.
 
+### Challenge 2 - Can't install software using SDK Manager
+After the initial flash of L4T on to the Xavier, you need to install the supporting software (CUDA, etc...) It seems to take forever installing over ethernet and therefore the USB option seems ideal.
+
+#### Solution
+It takes a few minutes between when the Xavier has completed the L4T install, and when it will be available again to install via USB.  Just start the process in SDK Manager and let it fail and retry - my experience has been that it *will* eventually start to work and present you with the "Install" button to click through.
+
+### Challenge 3 - Ubuntu version matters
+It seems that each version of Ubuntu supports a different L4T release.  The process of installing L4T appears to rely on the host filesystem for bits.  I find this challenge fairly disappointing - I have managed to get this working using a VM, but I don't want to have several VMs to maintain simply to try out different versions of JetPack.  Additionally, they do not all operate the same - I am fairly certain I cannot get k3s working on the L4T that is created using Ubuntu 20.04 
+
+| Jetson Linux(L4T) Version |	JetPack Version | Ubuntu Version |
+|:----|:----|:------|
+| | JP-5.1.4 | 18.04  |
+| | | 20.04 |
+| | | 22.04 |
+
+Source: [NVIDIA JetPack Archive](https://developer.nvidia.com/embedded/jetpack-archive)
 
