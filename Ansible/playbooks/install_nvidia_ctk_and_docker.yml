@@ -29,8 +29,7 @@
 
     - name: Install nvidia-docker2
       ansible.builtin.apt:
-        # name: nvidia-docker2
-        name: nvidia-docker2=2.8.0-1
+        name: nvidia-docker2
         state: present
 
     - name: Restart Docker service
