@@ -43,4 +43,9 @@ A number of the specific and opinionated items mentioned in this repo are actual
 ## References and Notes
 Some of this code brought to you by [Amazon Bedrock](https://aws.amazon.com/bedrock/) - specifically using [chat-cli](https://github.com/chat-cli/chat-cli) (Which I highly recommend - it's quite simple to get started)
 
+[AI at the Edge with K3s and NVIDIA Jetson Nano: Object Detection and Real-Time Video Analytics](https://www.suse.com/c/ai-at-the-edge-with-k3s-nvidia-jetson-nano-object-detection-real-time-video-analytics-src/)  
+
+[Run an Edge AI K3s Cluster on NVIDIA Jetson Nano Boards](https://www.suse.com/c/running-edge-artificial-intelligence-k3s-cluster-with-nvidia-jetson-nano-boards-src/)
+
+[NVIDIA Github - Docker won't run correctly](https://github.com/dusty-nv/jetson-containers/issues/108) - a dustynv thread
 (*) NOTE:  You can use this repo to deploy just a K3s cluster on the NVIDIA Jetsons (and not worry about Rancher and the subsequent AWS cost.)
