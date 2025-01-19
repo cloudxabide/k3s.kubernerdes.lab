@@ -16,6 +16,7 @@ I need to figure out how to get these initial tasks knocked out in a more scalab
 ```bash
 for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "10.10.12.21${HOST}"; done
 for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}.kubernerdes.lab"; done
+for HOST in 1 2 3; do echo "ssh-keygen -f \"/home/mansible/.ssh/known_hosts.kubernerdes.lab\" -R \"xavier-0${HOST}\" "; done
 for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}"; done
 ```
 
