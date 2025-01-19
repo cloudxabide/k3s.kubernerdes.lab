@@ -18,20 +18,22 @@ for HOST in 1 2 3
 do 
   ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "10.10.12.21${HOST}"
   ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}.kubernerdes.lab"
+  ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}"
 done
 ```
 
 ### Copy SSH key from management node to Jetson nodes
 TODO: Update this to automatically accept ssh fingerprint
 ```bash
-echo "NOTE: Cut-and-paste the text between BEGIN/END and enter yes and the password for nvidia user"
-echo "# BEGIN"
-for HOST in 1 2 3; do echo "ssh-copy-id nvidia@xavier-0${HOST}.kubernerdes.lab"; done
-echo "# END"
+echo "# BEGIN -- SSH Key Copy"
+echo "# Note: This is about to prompt you for your nvidia user's password."
+for HOST in 1 2 3; do ssh-copy-id -o StrictHostKeyChecking=accept-new nvidia@xavier-0${HOST}.kubernerdes.lab; done
+echo "# END -- SSH Key Copy"
 ```
 
 ### Add User for Ansible (mansible "My Ansible")
 ```bash
+echo "# Note: This is about to prompt you for your nvidia user's password."
 HOSTS=" 1 2 3"
 for HOST in $HOSTS
 do
@@ -42,8 +44,10 @@ do
 done
 ```
 
-### Test SSH + sudo connection
+### Copy SSH Key to hosts, then test SSH + sudo connection
 ```bash
+echo "# Note: This is about to prompt you for your mansible user's password."
+HOSTS=" 1 2 3"
 for HOST in 1 2 3; do ssh-copy-id mansible@xavier-0${HOST}.kubernerdes.lab; done
 for HOST in 1 2 3; do ssh -t mansible@xavier-0${HOST}.kubernerdes.lab "sudo uptime"; done
 ```
