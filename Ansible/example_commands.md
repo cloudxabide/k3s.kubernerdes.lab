@@ -23,13 +23,14 @@ ansible-playbook -l xavier-01.kubernerdes.lab -i inventories/kubernerdes.lab/hos
 ## Run deviceQuery
 ```bash
 ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "docker run --rm --runtime nvidia xift/jetson_devicequery:r32.5.0"
-ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "sudo docker run --rm --runtime=nvidia --gpus all ubuntu nvidia-smi"
 
-ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "docker run --rm --gpus all nvidia/cuda:12.0.0-base-ubuntu22.04 nvidia-smi"
-
+## Random Commands
+```bash
+ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "docker run --rm --runtime nvidia nvidia/cuda:12.0.0-base-ubuntu22.04 nvidia-smi"
 ```
 
 ## Expiremental
 ```bash
+sudo docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 sudo docker run --rm --runtime=nvidia
 ```
