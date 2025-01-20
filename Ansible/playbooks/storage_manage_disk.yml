@@ -49,3 +49,4 @@
         pvs: "{{ data_drive }}"
         vg: vg_nvme
         state: present
+...

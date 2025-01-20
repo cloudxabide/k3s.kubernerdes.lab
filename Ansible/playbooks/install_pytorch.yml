@@ -27,3 +27,4 @@
     - name: Display pip install result
       ansible.builtin.debug:
         var: pip_result
+...

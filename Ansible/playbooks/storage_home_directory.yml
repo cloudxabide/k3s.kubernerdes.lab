@@ -68,3 +68,4 @@
         src: /dev/vg_nvme/lv_home
         fstype: ext4
         state: mounted
+...
