@@ -1,7 +1,7 @@
 ---
 - name: Update nvpmodel to mode 8
-  hosts: all  
-  become: true 
+  hosts: all
+  become: true
 
   tasks:
     - name: Set nvpmodel to mode 8
