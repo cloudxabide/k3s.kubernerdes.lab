@@ -1,38 +1,56 @@
 ---
-- name: Install kubectl on Linux arm64
+- name: Install kubectl (latest/stable)
   hosts: all
   become: true
-  vars:
-    kubectl_version: "latest"  # Placeholder for the latest version
-
   tasks:
-    - name: Gather facts about the system (to determine architecture)
-      ansible.builtin.setup:
-
-    - name: Check if architecture is arm64
-      ansible.builtin.assert:
-        that:
-          - ansible_architecture == "arm64"
-        fail_msg: "This playbook is designed for arm64 architecture only."
-
     - name: Get latest kubectl version
       ansible.builtin.uri:
-        url: https://storage.googleapis.com/kubernetes-release/release/stable.txt
+        url: https://dl.k8s.io/release/stable.txt
         return_content: true
-      register: kubectl_stable_version
+      register: version
 
-    - name: Set kubectl version fact
-      ansible.builtin.set_fact:
-        kubectl_version: "{{ kubectl_stable_version.content.split('\n')[0] }}"
+    - name: Download the latest kubectl release
+      ansible.builtin.uri:
+        url: https://dl.k8s.io/release/{{ version.content }}/bin/linux/arm/kubectl
+        dest: /home/{{ ansible_user }}
+      register: kubectl
 
-    - name: Download kubectl
-      ansible.builtin.get_url:
-        url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kubectl_version }}/bin/linux/arm64/kubectl"
-        dest: /usr/local/bin/kubectl
-        mode: '0755'
+    - name: Download the kubectl checksum file
+      ansible.builtin.uri:
+        url: https://dl.k8s.io/{{ version.content }}/bin/linux/arm/kubectl.sha256
+        dest: /home/{{ ansible_user }}
 
-    - name: Verify kubectl installation
-      ansible.builtin.command: kubectl version --client
-      register: kubectl_version_output
-      failed_when: "'error' in kubectl_version_output.stderr"
+    - name: Download the kubectl checksum file
+      ansible.builtin.uri:
+        url: https://dl.k8s.io/{{ version.content }}/bin/linux/arm/kubectl.sha256
+        dest: /home/{{ ansible_user }}
+
+    - name: Validate the kubectl binary against the checksum file
+      ansible.builtin.command: echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+      register: result
       changed_when: false
+
+    - name: Assert that the kubectl binary is OK
+      vars:
+        expected: "kubectl: OK"
+      ansible.builtin.assert:
+        that:
+          - result.stdout == expected
+        fail_msg: "{{ result.stdout }}"
+        success_msg: "{{ result.stdout }}"
+
+    - name: Move kubectl and change permissions
+      ansible.builtin.file:
+        src: "{{ kubectl.path }}"
+        dest: /usr/local/bin/kubectl
+        state: hard
+        owner: root
+        group: root
+        mode: "+x"
+
+    - name: Check if kubectl is installed
+      ansible.builtin.command: kubectl version --client
+      register: client
+      failed_when: client.rc > 1
+      changed_when: false
+...
