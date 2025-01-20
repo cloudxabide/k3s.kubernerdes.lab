@@ -1,0 +1,38 @@
+---
+- name: Install kubectl on Linux amd64
+  hosts: all
+  become: true
+  vars:
+    kubectl_version: "latest"  # Placeholder for the latest version
+
+  tasks:
+    - name: Gather facts about the system (to determine architecture)
+      ansible.builtin.setup:
+
+    - name: Check if architecture is amd64
+      ansible.builtin.assert:
+        that:
+          - ansible_architecture == "x86_64"
+        fail_msg: "This playbook is designed for amd64 architecture only."
+
+    - name: Get latest kubectl version
+      ansible.builtin.uri:
+        url: https://storage.googleapis.com/kubernetes-release/release/stable.txt
+        return_content: true
+      register: kubectl_stable_version
+
+    - name: Set kubectl version fact
+      ansible.builtin.set_fact:
+        kubectl_version: "{{ kubectl_stable_version.content.split('\n')[0] }}"
+
+    - name: Download kubectl
+      ansible.builtin.get_url:
+        url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl"
+        dest: /usr/local/bin/kubectl
+        mode: '0755'
+
+    - name: Verify kubectl installation
+      ansible.builtin.command: kubectl version --client
+      register: kubectl_version_output
+      failed_when: "'error' in kubectl_version_output.stderr"
+      changed_when: false
