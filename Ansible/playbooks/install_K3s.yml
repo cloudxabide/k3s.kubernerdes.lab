@@ -1,0 +1,50 @@
+---
+- name: Install K3s on Master Node
+  hosts: xavier-01
+  become: yes
+  tasks:
+    - name: Download K3s installation script
+      get_url:
+        url: https://get.k3s.io
+        dest: /tmp/k3s_install.sh
+        mode: '0755'
+
+    - name: Install K3s on Master Node
+      shell: /tmp/k3s_install.sh
+      environment:
+        INSTALL_K3S_EXEC: "server"
+
+    - name: Get K3s token
+      shell: cat /var/lib/rancher/k3s/server/node-token
+      register: k3s_token
+
+    - name: Store K3s token
+      set_fact:
+        k3s_node_token: "{{ k3s_token.stdout }}"
+
+- name: Install K3s on Worker Nodes
+  hosts: xavier-02,xavier-03
+  become: yes
+  tasks:
+    - name: Download K3s installation script
+      get_url:
+        url: https://get.k3s.io
+        dest: /tmp/k3s_install.sh
+        mode: '0755'
+
+    - name: Install K3s on Worker Nodes
+      shell: /tmp/k3s_install.sh
+      environment:
+        K3S_URL: "https://{{ hostvars['xavier-01']['ansible_host'] }}:6443"
+        K3S_TOKEN: "{{ hostvars['xavier-01']['k3s_node_token'] }}"
+
+- name: Verify K3s Installation
+  hosts: xavier-01
+  become: yes
+  tasks:
+    - name: Wait for nodes to be ready
+      shell: k3s kubectl get nodes
+      register: node_status
+      until: "'Ready' in node_status.stdout"
+      retries: 10
+      delay: 30
