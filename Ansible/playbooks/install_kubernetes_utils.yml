@@ -1,5 +1,5 @@
 ---
-- name: Install kubectl on Linux amd64
+- name: Install kubectl on Linux arm64
   hosts: all
   become: true
   vars:
@@ -9,11 +9,11 @@
     - name: Gather facts about the system (to determine architecture)
       ansible.builtin.setup:
 
-    - name: Check if architecture is amd64
+    - name: Check if architecture is arm64
       ansible.builtin.assert:
         that:
-          - ansible_architecture == "x86_64"
-        fail_msg: "This playbook is designed for amd64 architecture only."
+          - ansible_architecture == "arm64"
+        fail_msg: "This playbook is designed for arm64 architecture only."
 
     - name: Get latest kubectl version
       ansible.builtin.uri:
@@ -27,7 +27,7 @@
 
     - name: Download kubectl
       ansible.builtin.get_url:
-        url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl"
+        url: "https://storage.googleapis.com/kubernetes-release/release/v{{ kubectl_version }}/bin/linux/arm64/kubectl"
         dest: /usr/local/bin/kubectl
         mode: '0755'
 
