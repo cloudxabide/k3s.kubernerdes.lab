@@ -18,10 +18,10 @@
     - name: Download the kubectl checksum file
       ansible.builtin.uri:
         url: https://dl.k8s.io/{{ version.content }}/bin/linux/arm/kubectl.sha256
-        dest: /home/{{ ansible_user }}
+        dest: /var/tmp/kubectl.sha256
 
     - name: Validate the kubectl binary against the checksum file
-      ansible.builtin.command: echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+      ansible.builtin.command: echo "$(cat /var/tmp/kubectl.sha256)  /var/tmp/kubectl" | sha256sum --check
       register: result
       changed_when: false
 
