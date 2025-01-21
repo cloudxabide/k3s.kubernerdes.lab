@@ -15,3 +15,8 @@ Package: containerd
 Pin: version 1.5.2*
 Pin-Priority: 1001
 EOF
+
+curl -sfL https://get.k3s.io | sh -s - --docker
+scp /etc/rancher/k3s/k3s.yaml mansible@10.10.12.10:.kube/k3s.kubeconfig
+K3S_TOKEN=$(cat /var/lib/rancher/k3s/server/node-token)
+curl -sfL https://get.k3s.io | K3S_URL=https://10.10.12.211:6443 K3S_TOKEN=$MY_K3S_TOKEN sh -s - --docker
