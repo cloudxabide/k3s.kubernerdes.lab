@@ -1,0 +1,35 @@
+---
+- name: Main playbook to run all other playbooks
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Include and run enable_sudo_nopasswd playbook
+      ansible.builtin.include_tasks: playbooks/enable_sudo_nopasswd.yml
+
+#    - name: Include and run configure_nvidia_power_mode playbook
+#      ansible.builtin.include_tasks: configure_nvidia_power_mode.yml
+#
+#    - name: Include and run disable_ipv6 playbook
+#      ansible.builtin.include_tasks: disable_ipv6.yml
+#
+#    - name: Include and run update_etc_hosts playbook
+#      ansible.builtin.include_tasks: update_etc_hosts.yml
+#
+#    - name: Include and run update_os playbook
+#      ansible.builtin.include_tasks: update_os.yml
+#
+#    - name: Include and run storage_manage_disk playbook
+#      ansible.builtin.include_tasks: storage_manage_disk.yml
+#
+#    - name: Include and run storage_vols_fs playbook
+#      ansible.builtin.include_tasks: storage_vols_fs.yml
+#
+#    - name: Include and run storage_home_directory playbook
+#      ansible.builtin.include_tasks: storage_home_directory.yml
+#
+# install_nvidia_prereq_pkgs.yml
+# install_nvidia_ctk_and_docker.yml
+# install_pytorch.yml
+# update_docker_runtime_for_nvidia.yml
+...
