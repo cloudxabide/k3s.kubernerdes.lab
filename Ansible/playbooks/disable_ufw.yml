@@ -1,0 +1,32 @@
+---
+- name: Disable UFW
+  hosts: all
+  become: yes  # This allows Ansible to use sudo privileges
+
+  tasks:
+    - name: Check if UFW is installed
+      command: which ufw
+      register: ufw_check
+      ignore_errors: yes
+      changed_when: false
+
+    - name: Stop UFW service
+      systemd:
+        name: ufw
+        state: stopped
+      when: ufw_check.rc == 0
+
+    - name: Disable UFW
+      command: ufw disable
+      when: ufw_check.rc == 0
+
+    - name: Disable UFW at boot
+      systemd:
+        name: ufw
+        enabled: no
+      when: ufw_check.rc == 0
+
+    - name: Display message if UFW is not installed
+      debug:
+        msg: "UFW is not installed on this system."
+      when: ufw_check.rc != 0
