@@ -14,10 +14,11 @@ I need to figure out how to get these initial tasks knocked out in a more scalab
 ## Commands and Tasks
 ### Cleanup existing keys (because I rebuild my environemnt quite frequently)
 ```bash
-for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "10.10.12.21${HOST}"; done
-for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}.kubernerdes.lab"; done
-for HOST in 1 2 3; do echo "ssh-keygen -f \"/home/mansible/.ssh/known_hosts.kubernerdes.lab\" -R \"xavier-0${HOST}\" "; done
-for HOST in 1 2 3; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}"; done
+HOSTS="1 2 3"
+for HOST in ${HOSTS}; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "10.10.12.21${HOST}"; done
+for HOST in ${HOSTS}; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}.kubernerdes.lab"; done
+for HOST in ${HOSTS}; do echo "ssh-keygen -f \"/home/mansible/.ssh/known_hosts.kubernerdes.lab\" -R \"xavier-0${HOST}\" "; done
+for HOST in ${HOSTS}; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}"; done
 ```
 
 ### Copy SSH key from management node to Jetson nodes
@@ -25,14 +26,15 @@ TODO: Update this to automatically accept ssh fingerprint
 ```bash
 echo "# BEGIN -- SSH Key Copy"
 echo "# Note: This is about to prompt you for your nvidia user's password."
-for HOST in 1 2 3; do ssh-copy-id -o StrictHostKeyChecking=accept-new nvidia@xavier-0${HOST}.kubernerdes.lab; done
+HOSTS="1 2 3"
+for HOST in ${HOSTS}; do ssh-copy-id -o StrictHostKeyChecking=accept-new nvidia@xavier-0${HOST}.kubernerdes.lab; done
 echo "# END -- SSH Key Copy"
 ```
 
 ### Add User for Ansible (mansible "My Ansible")
 ```bash
 echo "# Note: This is about to prompt you for your nvidia user's password."
-HOSTS=" 1 2 3"
+HOSTS="1 2 3"
 for HOST in $HOSTS
 do
   ssh -t nvidia@xavier-0$HOST.kubernerdes.lab "
@@ -45,11 +47,11 @@ done
 ### Copy SSH Key to hosts, then test SSH + sudo connection
 ```bash
 echo "# Note: This is about to prompt you for your mansible user's password."
-HOSTS=" 1 2 3"
-for HOST in 1 2 3; do ssh-copy-id mansible@xavier-0${HOST}.kubernerdes.lab; done
-for HOST in 1 2 3; do ssh -o StrictHostKeyChecking=accept-new -t mansible@xavier-0${HOST}.kubernerdes.lab "sudo uptime"; done
-for HOST in 1 2 3; do ssh -o StrictHostKeyChecking=accept-new -t mansible@xavier-0${HOST} "sudo uptime"; done
-for HOST in 1 2 3; do ssh -o StrictHostKeyChecking=accept-new -t mansible@10.10.12.21${HOST} "sudo uptime"; done
+HOSTS="1 2 3"
+for HOST in ${HOSTS}; do ssh-copy-id mansible@xavier-0${HOST}.kubernerdes.lab; done
+for HOST in ${HOSTS}; do ssh -o StrictHostKeyChecking=accept-new -t mansible@xavier-0${HOST}.kubernerdes.lab "sudo uptime"; done
+for HOST in ${HOSTS}; do ssh -o StrictHostKeyChecking=accept-new -t mansible@xavier-0${HOST} "sudo uptime"; done
+for HOST in ${HOSTS}; do ssh -o StrictHostKeyChecking=accept-new -t mansible@10.10.12.21${HOST} "sudo uptime"; done
 ```
 
 ### Test with Ansible ad-hoc command
