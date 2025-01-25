@@ -1,0 +1,29 @@
+---
+- name: Disable IPv6 on Ubuntu 20.04
+  hosts: all
+  become: true
+  tasks:
+    - name: Create sysctl configuration file to disable IPv6
+      ansible.builtin.template:
+        src: disable_ipv6.conf.j2
+        dest: /etc/sysctl.d/98-disable_ipv6.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Apply sysctl changes
+
+    - name: Ensure IPv6 is disabled immediately
+      ansible.posix.sysctl:
+        name: "{{ item }}"
+        value: '1'
+        state: present
+        reload: true
+      loop:
+        - net.ipv6.conf.all.disable_ipv6
+        - net.ipv6.conf.default.disable_ipv6
+        - net.ipv6.conf.lo.disable_ipv6
+
+  handlers:
+    - name: Apply sysctl changes
+      ansible.builtin.command: sysctl --system
+      changed_when: true
