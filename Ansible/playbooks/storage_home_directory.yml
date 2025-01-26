@@ -31,14 +31,22 @@
         fstype: ext4
         state: mounted
 
-    - name: Copy multiple Directories
-      ansible.builtin.copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        mode: "{{ item.mode }}"
-        remote_src: true
-      with_items:
-        - { src: '/home/', dest: '/mnt/newhome/', mode: preserve }
+    ansible.builtin.copy:
+      src: /home
+      dest: /mnt/newhome
+      recursive: yes
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+      mode: "{{ item.mode }}"
+    delegate_to: localhost
+    with_filetree:
+      path: /home
+      flat: yes
+      attributes:
+        owner: owner
+        group: group
+        mode: mode
+
 
     - name: Unmount the temporary mount point
       ansible.posix.mount:
