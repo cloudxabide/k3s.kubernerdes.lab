@@ -18,20 +18,6 @@
         size: 25g
         state: present
 
-    - name: Create Logical Volume for Opt
-      community.general.lvol:
-        vg: vg_nvme
-        lv: lv_opt
-        size: 15g
-        state: present
-
-    - name: Create Logical Volume for usr_local
-      community.general.lvol:
-        vg: vg_nvme
-        lv: lv_usr_local
-        size: 10g
-        state: present
-
     - name: Create filesystem on lv_docker
       community.general.filesystem:
         fstype: ext4
@@ -41,16 +27,6 @@
       community.general.filesystem:
         fstype: ext4
         dev: /dev/vg_nvme/lv_rancher
-
-    - name: Create filesystem on lv_opt
-      community.general.filesystem:
-        fstype: ext4
-        dev: /dev/vg_nvme/lv_opt
-
-    - name: Create filesystem on lv_usr_local
-      community.general.filesystem:
-        fstype: ext4
-        dev: /dev/vg_nvme/lv_usr_local
 
     - name: Create mount point for Docker
       ansible.builtin.file:
@@ -68,22 +44,6 @@
         owner: root
         group: root
 
-    - name: Create mount point for Opt
-      ansible.builtin.file:
-        path: /opt
-        state: directory
-        mode: '0755'
-        owner: root
-        group: root
-
-    - name: Create mount point for usr_local
-      ansible.builtin.file:
-        path: /usr/local
-        state: directory
-        mode: '0755'
-        owner: root
-        group: root
-
     - name: Mount lv_docker
       ansible.posix.mount:
         path: /var/lib/docker
@@ -95,20 +55,6 @@
       ansible.posix.mount:
         path: /var/lib/rancher
         src: /dev/vg_nvme/lv_rancher
-        fstype: ext4
-        state: mounted
-
-    - name: Mount lv_opt
-      ansible.posix.mount:
-        path: /opt
-        src: /dev/vg_nvme/lv_opt
-        fstype: ext4
-        state: mounted
-
-    - name: Mount lv_usr-local
-      ansible.posix.mount:
-        path: /usr/local
-        src: /dev/vg_nvme/lv_usr_local
         fstype: ext4
         state: mounted
 ...
