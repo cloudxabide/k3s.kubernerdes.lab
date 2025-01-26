@@ -1,0 +1,78 @@
+---
+- name: Configure Volume, Filesystem, and Mount for /usr/local
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Create Logical Volume for Home
+      community.general.lvol:
+        vg: vg_nvme
+        lv: lv_usr_local
+        size: 20g
+        state: present
+
+    - name: Create filesystem on lv_usr_local
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/vg_nvme/lv_usr_local
+
+    - name: Create a temporary mount point
+      ansible.builtin.file:
+        path: /mnt/newusr_local
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Mount lv_usr/local in temporary filesystem
+      ansible.posix.mount:
+        path: /mnt/newusr_local
+        src: /dev/vg_nvme/lv_usr_local
+        fstype: ext4
+        state: mounted
+
+    ansible.builtin.copy:
+      src: /usr/local
+      dest: /mnt/newusr_local
+      recursive: yes
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+      mode: "{{ item.mode }}"
+    delegate_to: localhost
+    with_filetree:
+      path: /usr/local
+      flat: yes
+      attributes:
+        owner: owner
+        group: group
+        mode: mode
+
+    - name: Unmount the temporary mount point
+      ansible.posix.mount:
+        path: /mnt/newusr_local
+        state: unmounted
+
+    - name: Remove the temporary mount point
+      ansible.builtin.file:
+        path: /mnt/newusr_local
+        state: absent
+
+    - name: Backup original /usr/local
+      ansible.builtin.command: mv /usr/local /usr/local.bak
+      register: usr/local_backed_up
+      changed_when: usr/local_backed_up.rc != 0
+
+    - name: Create mount point for Home
+      ansible.builtin.file:
+        path: /usr/local
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+    - name: Mount Home (new)
+      ansible.posix.mount:
+        path: /usr/local
+        src: /dev/vg_nvme/lv_usr_local
+        fstype: ext4
+        state: mounted
+...

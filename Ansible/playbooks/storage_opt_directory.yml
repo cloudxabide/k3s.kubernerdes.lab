@@ -1,0 +1,79 @@
+---
+- name: Configure Volume, Filesystem, and Mount for /opt
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Create Logical Volume for Home
+      community.general.lvol:
+        vg: vg_nvme
+        lv: lv_opt
+        size: 20g
+        state: present
+
+    - name: Create filesystem on lv_opt
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/vg_nvme/lv_opt
+
+    - name: Create a temporary mount point
+      ansible.builtin.file:
+        path: /mnt/newopt
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Mount lv_opt in temporary filesystem
+      ansible.posix.mount:
+        path: /mnt/newopt
+        src: /dev/vg_nvme/lv_opt
+        fstype: ext4
+        state: mounted
+
+    ansible.builtin.copy:
+      src: /opt
+      dest: /mnt/newopt
+      recursive: yes
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+      mode: "{{ item.mode }}"
+    delegate_to: localhost
+    with_filetree:
+      path: /opt
+      flat: yes
+      attributes:
+        owner: owner
+        group: group
+        mode: mode
+
+
+    - name: Unmount the temporary mount point
+      ansible.posix.mount:
+        path: /mnt/newopt
+        state: unmounted
+
+    - name: Remove the temporary mount point
+      ansible.builtin.file:
+        path: /mnt/newopt
+        state: absent
+
+    - name: Backup original /opt
+      ansible.builtin.command: mv /opt /opt.bak
+      register: opt_backed_up
+      changed_when: opt_backed_up.rc != 0
+
+    - name: Create mount point for Home
+      ansible.builtin.file:
+        path: /opt
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+    - name: Mount Home (new)
+      ansible.posix.mount:
+        path: /opt
+        src: /dev/vg_nvme/lv_opt
+        fstype: ext4
+        state: mounted
+...
