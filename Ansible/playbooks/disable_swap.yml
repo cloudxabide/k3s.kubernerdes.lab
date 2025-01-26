@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Disable swap entry in /etc/fstab
+      replace:
+        path: /etc/fstab
+        regexp: '^(\s*)([^#\n]+)(\s+)(swap)(\s+)(\S+)(\s+\S+\s*)$'
+        replace: '# \2 was on \6'
+
+    - name: Remove swap files
+      command: swapoff -a
+      when: ansible_swaptotal_mb > 0
+
+    - name: Disable swap on runtime
+      shell: |
+        set -o pipefail
+        free | awk '/^Swap:/ {
+          if ($2 > 0) {
+            printf "Removing %d kilobytes of swap from %s\n", $3, "/dev/" $1
+            /sbin/swapoff "/dev/" $1
+          }
+        }'
