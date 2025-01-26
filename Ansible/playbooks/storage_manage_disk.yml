@@ -1,5 +1,5 @@
 ---
-- name: Configure NVMe disk as single PV and install LVM2
+- name: Configure NVMe disk as single partition, install LVM2, create PV,VG
   hosts: all
   become: true  # This allows Ansible to use sudo
   vars:
