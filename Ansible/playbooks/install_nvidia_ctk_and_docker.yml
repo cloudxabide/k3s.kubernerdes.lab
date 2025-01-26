@@ -94,7 +94,8 @@
         state: restarted
 
     - name: Test NVIDIA Container Toolkit installation
-      ansible.builtin.command: "sudo docker run --rm --runtime nvidia nvidia/cuda:12.0.0-base-ubuntu22.04 nvidia-smi"
+      ansible.builtin.command: "sudo docker run --rm --runtime nvidia xift/jetson_devicequery:r32.5.0"
+      # ansible.builtin.command: "sudo docker run --rm --runtime nvidia nvidia/cuda:12.0.0-base-ubuntu22.04 nvidia-smi"
       # ansible.builtin.command: "docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi"
       register: test_output
       changed_when: false
