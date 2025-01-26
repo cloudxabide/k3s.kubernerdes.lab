@@ -31,18 +31,19 @@
         fstype: ext4
         state: mounted
 
-    ansible.builtin.copy:
-      src: /usr/local
-      dest: /mnt/newusr_local
-      recursive: yes
-      owner: "{{ item.owner }}"
-      group: "{{ item.group }}"
-      mode: "{{ item.mode }}"
-    delegate_to: localhost
-    with_filetree:
-      path: /usr/local
-      flat: yes
-      attributes:
+    - name: Copy /usr/local to /mnt/newusr_local
+      ansible.builtin.copy:
+        src: /usr/local
+        dest: /mnt/newusr_local
+        recursive: true
+        owner: "{{ item.owner }}"
+        group: "{{ item.group }}"
+        mode: "{{ item.mode }}"
+      delegate_to: localhost
+      with_community.general.filetree:
+        path: /usr/local
+        flat: true
+        attributes:
         owner: owner
         group: group
         mode: mode
@@ -59,8 +60,8 @@
 
     - name: Backup original /usr/local
       ansible.builtin.command: mv /usr/local /usr/local.bak
-      register: usr/local_backed_up
-      changed_when: usr/local_backed_up.rc != 0
+      register: usr_local_backed_up
+      changed_when: usr_local_backed_up.rc != 0
 
     - name: Create mount point for Home
       ansible.builtin.file:
