@@ -4,7 +4,7 @@
   become: true
   tasks:
 
-    - name: Create Logical Volume for Home
+    - name: Create Logical Volume for usr/local 
       community.general.lvol:
         vg: vg_nvme
         lv: lv_usr_local
@@ -44,9 +44,9 @@
         path: /usr/local
         flat: true
         attributes:
-        owner: owner
-        group: group
-        mode: mode
+          owner: owner
+          group: group
+          mode: mode
 
     - name: Unmount the temporary mount point
       ansible.posix.mount:
@@ -63,7 +63,7 @@
       register: usr_local_backed_up
       changed_when: usr_local_backed_up.rc != 0
 
-    - name: Create mount point for Home
+    - name: Create mount point for /usr/local 
       ansible.builtin.file:
         path: /usr/local
         state: directory
