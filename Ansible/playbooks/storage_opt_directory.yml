@@ -3,8 +3,7 @@
   hosts: all
   become: true
   tasks:
-
-    - name: Create Logical Volume for Home
+    - name: Create Logical Volume for Opt
       community.general.lvol:
         vg: vg_nvme
         lv: lv_opt
@@ -40,13 +39,13 @@
         group: "{{ item.group }}"
         mode: "{{ item.mode }}"
       delegate_to: localhost
-      with_filetree:
+      with_community.general.filetree:
         path: /opt
         flat: true
         attributes:
-        owner: owner
-        group: group
-        mode: mode
+          owner: owner
+          group: group
+          mode: mode
 
     - name: Unmount the temporary mount point
       ansible.posix.mount:
