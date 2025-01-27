@@ -34,3 +34,29 @@ docker run --rm --runtime nvidia -it nvcr.io/nvidia/l4t-base:r32.4.3
 
 sudo apt install libnvidia-container-tools libnvidia-container0:arm64 nvidia-container-csv-cuda nvidia-container-csv-tensorrt nvidia-container-runtime nvidia-container-toolkit nvidia-docker2
 
+# curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='--flannel-backend=none --disable-network-policy --docker' sh -
+
+# Trying cilium
+## On K3s node
+export INSTALL_K3S_VERSION="v1.29.12+k3s1"
+export INSTALL_K3S_EXEC='--flannel-backend=none --disable-network-policy --docker'
+curl -sfL https://get.k3s.io |  sh -
+scp /etc/rancher/k3s/k3s.yaml mansible@10.10.12.10:.kube/k3s.kubeconfig
+
+## Run on kubernerd
+# Get PodCIDR for this node
+export KUBECONFIG=~/.kube/k3s.kubeconfig
+sed -i -e 's/127.0.0.1/10.10.12.211/g' $KUBECONFIG
+PODCIDR=$(kubectl get nodes -o jsonpath='{.items[*].spec.podCIDR}')
+echo "cilium install --version 1.16.6 --set=ipam.operator.clusterPoolIPv4PodCIDRList=\"${PODCIDR}\""
+cilium install --version 1.16.6 --set=ipam.operator.clusterPoolIPv4PodCIDRList="${PODCIDR}"
+
+MODULES="ipt_REJECT
+xt_mark
+xt_multiport
+xt_TPROXY
+xt_CT
+sch_ingress
+ip_set
+cls_bpf"
+for MOD in $MODULES; do lsmod | grep $MOD || { insmod $MOD; } && { echo "$MOD found"; };  done
