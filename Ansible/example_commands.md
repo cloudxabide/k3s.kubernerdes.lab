@@ -1,6 +1,7 @@
 # Example Commands
 
 ## Run a bunch of playbooks ad-hoc
+```bash
 PLAYBOOKS="enable_sudo_nopasswd.yml
 configure_nvidia_power_mode.yml
 disable_ipv6.yml
@@ -9,6 +10,7 @@ for PLAYBOOK in $PLAYBOOKS
 do
   ansible-playbook -l xavier-01.kubernerdes.lab -i inventories/kubernerdes.lab/hosts playbooks/$PLAYBOOK
 done
+```
 
 ## Run ad-hoc command on all hosts 
 ```bash
