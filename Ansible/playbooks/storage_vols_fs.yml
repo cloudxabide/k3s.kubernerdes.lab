@@ -1,5 +1,5 @@
 ---
-- name: Configure Volumes, Filesystems, and Mounts
+- name: Configure Volumes, Filesystems, and Mounts (Rancher and Docker)
   hosts: all
   become: true
   tasks:
