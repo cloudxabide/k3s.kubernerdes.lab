@@ -4,7 +4,7 @@
   become: true
   tasks:
 
-    - name: Create Logical Volume for usr/local 
+    - name: Create Logical Volume for usr/local
       community.general.lvol:
         vg: vg_nvme
         lv: lv_usr_local
@@ -24,29 +24,19 @@
         owner: root
         group: root
 
-    - name: Mount lv_usr/local in temporary filesystem
+    - name: Mount lv_usr_local in temporary filesystem
       ansible.posix.mount:
         path: /mnt/newusr_local
         src: /dev/vg_nvme/lv_usr_local
         fstype: ext4
         state: mounted
 
-    - name: Copy /usr/local to /mnt/newusr_local
-      ansible.builtin.copy:
+    - name: Synchronize /usr/local to new volume
+      ansible.posix.synchronize:
         src: /usr/local
         dest: /mnt/newusr_local
         recursive: true
-        owner: "{{ item.owner }}"
-        group: "{{ item.group }}"
-        mode: "{{ item.mode }}"
-      delegate_to: localhost
-      with_community.general.filetree:
-        path: /usr/local
-        flat: true
-        attributes:
-          owner: owner
-          group: group
-          mode: mode
+      delegate_to: "{{ inventory_hostname }}"
 
     - name: Unmount the temporary mount point
       ansible.posix.mount:
@@ -63,7 +53,7 @@
       register: usr_local_backed_up
       changed_when: usr_local_backed_up.rc != 0
 
-    - name: Create mount point for /usr/local 
+    - name: Create mount point for /usr/local
       ansible.builtin.file:
         path: /usr/local
         state: directory
