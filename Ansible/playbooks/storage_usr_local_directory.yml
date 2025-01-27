@@ -4,7 +4,7 @@
   become: true
   tasks:
 
-    - name: Create Logical Volume for usr/local
+    - name: Create Logical Volume for /usr/local
       community.general.lvol:
         vg: vg_nvme
         lv: lv_usr_local
