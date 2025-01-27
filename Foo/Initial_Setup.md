@@ -14,6 +14,7 @@ I need to figure out how to get these initial tasks knocked out in a more scalab
 ## Commands and Tasks
 Set an environment variable for the hosts you wish to manage (will be used throughout this page)
 ```
+HOSTS="1"
 HOSTS="1 2 3"
 ```
 ### Cleanup existing keys (because I rebuild my environemnt quite frequently)
@@ -35,11 +36,13 @@ echo "# END -- SSH Key Copy"
 
 ### Add User for Ansible (mansible "My Ansible")
 ```bash
-echo "# Note: This is about to prompt you for your nvidia user's password."
+echo "# Note: This is about to, once again, prompt you for your nvidia user's password."
 for HOST in $HOSTS
 do
   ssh -t nvidia@xavier-0$HOST.kubernerdes.lab "
   sudo mkdir -p /etc/sudoers.d
+  # Need to add a case statement here for Ubuntu 18 vs 20
+  # $6$woJRKQ1y$p0IeEVkg0FPZYGzSLhdUNQFLclOel.vowfYunuadwPfYH9JZgabJ5RZxo8sM2sAkrJ9lLjbpGVBQ.tmsmVo/R0
   sudo useradd -m -Gadm,sudo -u1001 -c 'My Ansible' -d /var/mansible -s /bin/bash -p '\$y\$j9T\$Ug0Hazie0m6D4TXqkk0Uh0\$fEB2zDsPbm6FIl3tvT9KoXXQBUVkOj3LhP4/pjjbty9' mansible
   echo 'mansible ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/mansible-nopasswd-all"
 done
