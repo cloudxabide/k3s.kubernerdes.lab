@@ -31,23 +31,12 @@
         fstype: ext4
         state: mounted
 
-    - name: Copy content in /home to /mnt/newhome
-      ansible.builtin.copy:
-        src: /home
-        dest: /mnt/newhome
+    - name: Synchronize /home to new volume
+      ansible.posix.synchronize:
+        src: /home/
+        dest: /mnt/newhome/
         recursive: true
-        owner: "{{ item.owner }}"
-        group: "{{ item.group }}"
-        mode: "{{ item.mode }}"
-      delegate_to: localhost
-      with_community.general.filetree:
-        path: /home
-        flat: true
-        attributes:
-          owner: owner
-          group: group
-          mode: mode
-
+      delegate_to: "{{ inventory_hostname }}"
 
     - name: Unmount the temporary mount point
       ansible.posix.mount:
