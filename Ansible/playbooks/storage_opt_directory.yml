@@ -31,10 +31,11 @@
         state: mounted
 
     - name: Synchronize /home to new volume
-      synchronize:
+      ansible.posix.synchronize:
         src: /opt/
         dest: /mnt/newopt/
-        recursive: yes
+        recursive: true
+      delegate_to: "{{ inventory_hostname }}"
 
     - name: Unmount the temporary mount point
       ansible.posix.mount:
