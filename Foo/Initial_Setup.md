@@ -12,9 +12,12 @@ I created this as there are steps needed to get the nodes with newly installed O
 I need to figure out how to get these initial tasks knocked out in a more scalable way.  But... this works (for now) and I'd rather invest my time in the "difficult tasks"
 
 ## Commands and Tasks
+Set an environment variable for the hosts you wish to manage (will be used throughout this page)
+```
+HOSTS="1 2 3"
+```
 ### Cleanup existing keys (because I rebuild my environemnt quite frequently)
 ```bash
-HOSTS="1 2 3"
 for HOST in ${HOSTS}; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "10.10.12.21${HOST}"; done
 for HOST in ${HOSTS}; do ssh-keygen -f "/home/mansible/.ssh/known_hosts.kubernerdes.lab" -R "xavier-0${HOST}.kubernerdes.lab"; done
 for HOST in ${HOSTS}; do echo "ssh-keygen -f \"/home/mansible/.ssh/known_hosts.kubernerdes.lab\" -R \"xavier-0${HOST}\" "; done
@@ -26,7 +29,6 @@ TODO: Update this to automatically accept ssh fingerprint
 ```bash
 echo "# BEGIN -- SSH Key Copy"
 echo "# Note: This is about to prompt you for your nvidia user's password."
-HOSTS="1 2 3"
 for HOST in ${HOSTS}; do ssh-copy-id -o StrictHostKeyChecking=accept-new nvidia@xavier-0${HOST}.kubernerdes.lab; done
 echo "# END -- SSH Key Copy"
 ```
@@ -34,7 +36,6 @@ echo "# END -- SSH Key Copy"
 ### Add User for Ansible (mansible "My Ansible")
 ```bash
 echo "# Note: This is about to prompt you for your nvidia user's password."
-HOSTS="1 2 3"
 for HOST in $HOSTS
 do
   ssh -t nvidia@xavier-0$HOST.kubernerdes.lab "
@@ -47,7 +48,6 @@ done
 ### Copy SSH Key to hosts, then test SSH + sudo connection
 ```bash
 echo "# Note: This is about to prompt you for your mansible user's password."
-HOSTS="1 2 3"
 for HOST in ${HOSTS}; do ssh-copy-id mansible@xavier-0${HOST}.kubernerdes.lab; done
 for HOST in ${HOSTS}; do ssh -o StrictHostKeyChecking=accept-new -t mansible@xavier-0${HOST}.kubernerdes.lab "sudo uptime"; done
 for HOST in ${HOSTS}; do ssh -o StrictHostKeyChecking=accept-new -t mansible@xavier-0${HOST} "sudo uptime"; done

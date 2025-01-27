@@ -33,8 +33,8 @@
 
     - name: Synchronize /usr/local to new volume
       ansible.posix.synchronize:
-        src: /usr/local
-        dest: /mnt/newusr_local
+        src: /usr/local/
+        dest: /mnt/newusr_local/
         recursive: true
       delegate_to: "{{ inventory_hostname }}"
 
