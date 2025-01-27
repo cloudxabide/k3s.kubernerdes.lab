@@ -14,32 +14,6 @@
         autoremove: true
         autoclean: true
 
-    - name: Remove LibreOffice packages
-      ansible.builtin.apt:
-        name:
-          - libreoffice-core
-          - libreoffice-common
-          - libreoffice-writer
-          - libreoffice-calc
-          - libreoffice-impress
-          - libreoffice-draw
-          - libreoffice-math
-          - libreoffice-base
-          - libreoffice-gnome
-          - libreoffice-gtk3
-          - libreoffice-style-*
-        state: absent
-        purge: true
-        autoremove: true
-
-    - name: Remove LibreOffice configuration files
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: absent
-      with_items:
-        - /home/{{ ansible_user }}/.config/libreoffice
-        - /home/{{ ansible_user }}/.libreoffice
-
     - name: Clean up APT
       ansible.builtin.apt:
         autoclean: true
@@ -48,9 +22,9 @@
       ansible.builtin.apt:
         autoremove: true
 
-    - name: Notify user about removal
+    - name: Notify user about package update 
       ansible.builtin.debug:
-        msg: "LibreOffice has been removed from the system."
+        msg: "System Packages have been updated"
 
     - name: Check if a reboot is required
       ansible.builtin.stat:
