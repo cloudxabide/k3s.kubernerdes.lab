@@ -41,8 +41,8 @@ for HOST in $HOSTS
 do
   ssh -t nvidia@xavier-0$HOST.kubernerdes.lab "
   sudo mkdir -p /etc/sudoers.d
-  # Need to add a case statement here for Ubuntu 18 vs 20
-  # $6$woJRKQ1y$p0IeEVkg0FPZYGzSLhdUNQFLclOel.vowfYunuadwPfYH9JZgabJ5RZxo8sM2sAkrJ9lLjbpGVBQ.tmsmVo/R0
+  # TODO: Need to add a case statement here for Ubuntu 18 vs 20
+  # Ubuntu_18: $6$woJRKQ1y$p0IeEVkg0FPZYGzSLhdUNQFLclOel.vowfYunuadwPfYH9JZgabJ5RZxo8sM2sAkrJ9lLjbpGVBQ.tmsmVo/R0
   sudo useradd -m -Gadm,sudo -u1001 -c 'My Ansible' -d /var/mansible -s /bin/bash -p '\$y\$j9T\$Ug0Hazie0m6D4TXqkk0Uh0\$fEB2zDsPbm6FIl3tvT9KoXXQBUVkOj3LhP4/pjjbty9' mansible
   echo 'mansible ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/mansible-nopasswd-all"
 done
