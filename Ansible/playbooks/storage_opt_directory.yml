@@ -30,7 +30,7 @@
         fstype: ext4
         state: mounted
 
-    - name: Synchronize /home to new volume
+    - name: Synchronize /opt to new volume
       ansible.posix.synchronize:
         src: /opt/
         dest: /mnt/newopt/
