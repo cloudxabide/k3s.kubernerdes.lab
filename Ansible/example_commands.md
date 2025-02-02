@@ -5,7 +5,24 @@
 PLAYBOOKS="enable_sudo_nopasswd.yml
 configure_nvidia_power_mode.yml
 disable_ipv6.yml
-update_etc_hosts.yml"
+disable_swap.yml
+update_etc_hosts.yml
+storage_manage_disk.yml
+storage_vols_fs.yml
+storage_home_directory.yml
+storage_opt_directory.yml
+storage_usr_local_directory.yml
+"
+
+OTHER_PLAYBOOKS="
+install_kubernetes_utils.yml
+install_nvidia_ctk_and_docker.yml
+update_docker_runtime_for_nvidia.yml
+install_nvidia_prereq_pkgs.yml
+install_pytorch.yml
+install_K3s.yml
+update_os.yml"
+
 for PLAYBOOK in $PLAYBOOKS
 do
   ansible-playbook -l xavier-01.kubernerdes.lab -i inventories/kubernerdes.lab/hosts playbooks/$PLAYBOOK
@@ -50,3 +67,24 @@ ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "nvidia-smi"
 sudo docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: nvidia-container-runtime did not terminate successfully: exit status 1: unknown.non-zero return code
 ```
+configure_nvidia_power_mode.yml
+disable_ipv6.yml
+disable_swap.yml
+disable_ufw.yml
+enable_sudo_nopasswd.yml
+install_K3s.yml
+install_kubernetes_utils.yml
+install_nvidia_ctk_and_docker.yml
+install_nvidia_prereq_pkgs.yml
+install_pytorch.yml
+storage_home_directory.yml
+storage_manage_disk.yml
+storage_opt_directory.yml
+storage_usr_local_directory.yml
+storage_vols_fs.yml
+update_docker_runtime_for_nvidia.yml
+update_etc_hosts.yml
+update_os.yml
+
+
+
