@@ -5,7 +5,6 @@ sudo dpkg -i docker.io_20.10.2-0ubuntu1~18.04.2_arm64.deb
 rm docker.io_20.10.2-0ubuntu1~18.04.2_arm64.deb
 sudo apt install containerd=1.5.2-0ubuntu1~18.04.3
 
-
 cat << EOF > /etc/apt/preferences
 Package: docker.io
 Pin: version 20.10.2*
@@ -39,7 +38,9 @@ sudo apt install libnvidia-container-tools libnvidia-container0:arm64 nvidia-con
 # Trying cilium
 ## On K3s node
 export INSTALL_K3S_VERSION="v1.29.12+k3s1"
-export INSTALL_K3S_EXEC='--flannel-backend=none --disable-network-policy --docker'
+export INSTALL_K3S_EXEC='--flannel-backend=none --disable-network-policy --docker --advertise-address=10.10.12.210'
+export INSTALL_K3S_EXEC='--docker --advertise-address=10.42.0.1 '
+export INSTALL_K3S_EXEC='--docker --prefer-bundled-bin '
 curl -sfL https://get.k3s.io |  sh -
 scp /etc/rancher/k3s/k3s.yaml mansible@10.10.12.10:.kube/k3s.kubeconfig
 
