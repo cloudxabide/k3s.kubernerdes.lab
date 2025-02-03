@@ -42,7 +42,7 @@ Software, etc..
 * NVIDIA Jetson Xavier NX Software (acquired via NVIDIA SDK Manager)
 * SUSE Rancher 
 * SUSE K3s
-* Amazon account with avialable quota run this workload
+* Amazon account with available quota run this workload
 * VPN connectivity to AWS Transit Gateway
 
 ![High Level Overview](./Images/High_Level_Overview.drawio.png)
