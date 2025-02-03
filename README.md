@@ -1,11 +1,18 @@
 # k3s.kubernerdes.lab
 
-## Purpose
-How to deploy k3s on NVIDIA Jetson Xavier NX (now featuring Ansible).
+## Purpose and Narrative
 
-NOTE: This repo is a *rather* opinionated approach in that I am using NVIDIA Jetson Xavier NX modules (with a specific disk layout that I have opted for) as well as Ansible to execute the set up of the devices.  That said, this is not a generic how-to on how to run K3s on NVIDIA Jetsons.
+How to:
+* deploy k3s on NVIDIA Jetson Xavier NX (now featuring Ansible).
+* deploy k3s on vSphere Virtual Machines (x86)
+
+This repo is a *rather* opinionated approach in that I am using NVIDIA Jetson Xavier NX modules (with a specific disk layout that I have opted for) as well as Ansible to execute the set up of the devices.  That said, this is not a generic how-to on how to run K3s on NVIDIA Jetsons.
+
+A number of the specific and opinionated items mentioned in this repo are actually quite flexible.  I have decided on a particular architecture and approach in order to make this a solution that absolutely works (tm), given that the guidance provided is followed.
 
 ### Status
+2025-02-2 -- While I am trying to figure out how to deploy on the Jetsons, I will focus on deploying on vSphere, and then integrating with Rancher.
+
 2025-01-21 -- Progress. It turns out that the steps I was using to confirm success, were not valid on the Jetson.  I.e. you cannot run nvidia-smi on a Jetson (it is for PC-based GPU)
 
 2025-01-18 -- I still have yet to find the combination of Repos + Packages to make this work.  Resorting to using SDK to install Jetpack 4.6.1 and all the supporting software on to the NVMe device. :-(
@@ -40,9 +47,6 @@ Software, etc..
 
 ![High Level Overview](./Images/High_Level_Overview.drawio.png)
 ![K3s on vSphere](./Images/vSphere_Overview.drawio.png)
-
-## Narrative
-A number of the specific and opinionated items mentioned in this repo are actually quite flexible.  I have decided on a particular architecture and approach in order to make this a solution that absolutely works (tm), given that the guidance provided is followed.
 
 ## References and Notes
 Some of this code brought to you by [Amazon Bedrock](https://aws.amazon.com/bedrock/) - specifically using [chat-cli](https://github.com/chat-cli/chat-cli) (Which I highly recommend - it's quite simple to get started)
