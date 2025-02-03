@@ -33,15 +33,15 @@ This is not an exhaustive list (at this time).  These are the more important/obv
 
 Physical Assets
 * NVIDIA Jetson Xavier NX 
- * 3 x [Seeed Studio - reComputer J2011-Edge AI Device with Jetson Xavier NX 8GB module](https://www.seeedstudio.com/Jetson-20-1-H1-p-5328.html) with Power Supplies  
- * 5-port 1GB Network Switch and cables (4 x host + 1 x uplink)
- * System capable of running [Ubuntu 20.04 LTS](https://ubuntu.com/download/desktop) and [NVIDIA SDK Manager](https://developer.nvidia.com/sdk-manager) to flash the NVIDIA Jetson Xavier modules
+  * 3 x [Seeed Studio - reComputer J2011-Edge AI Device with Jetson Xavier NX 8GB module](https://www.seeedstudio.com/Jetson-20-1-H1-p-5328.html) with Power Supplies  
+  * 5-port 1GB Network Switch and cables (4 x host + 1 x uplink)
+  * System capable of running [Ubuntu 20.04 LTS](https://ubuntu.com/download/desktop) and [NVIDIA SDK Manager](https://developer.nvidia.com/sdk-manager) to flash the NVIDIA Jetson Xavier modules
 * VMWare vSphere 
- * NUC13ANHi7 - Processor Type:	13th Gen Intel(R) Core(TM) i7-1360P, 64 GB Memory
- * 5-port 1GB Network Switch and cables (4 x host + 1 x uplink)
+  * NUC13ANHi7 - Processor Type:	13th Gen Intel(R) Core(TM) i7-1360P, 64 GB Memory
+  * 5-port 1GB Network Switch and cables (4 x host + 1 x uplink)
 * Common 
- * Keyboard/Video/Mouse  
-* Internet Connectivity from Jetsons (while air-gapped is possible, it is well out of the scope here)
+  * Keyboard/Video/Mouse  
+  * Internet Connectivity from Jetsons (while air-gapped is possible, it is well out of the scope here)
 
 Software, etc..
 * NVIDIA Jetson Xavier NX Software (acquired via NVIDIA SDK Manager)
