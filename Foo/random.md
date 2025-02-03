@@ -61,3 +61,34 @@ sch_ingress
 ip_set
 cls_bpf"
 for MOD in $MODULES; do lsmod | grep $MOD || { insmod $MOD; } && { echo "$MOD found"; };  done
+
+## Latest install method (x86 on VMWare guests)
+### Install with embedded-etcd
+First System
+```
+curl -sfL https://get.k3s.io | \
+	INSTALL_K3S_VERSION=${K3s_VERSION} \
+	INSTALL_K3S_SKIP_SELINUX_RPM=true \
+	INSTALL_K3S_EXEC='server --cluster-init --write-kubeconfig-mode=644' \
+	sh -s -
+
+Second/Third System
+```
+# Private IP preferred, if available
+FIRST_SERVER_IP=""
+# From /var/lib/rancher/k3s/server/node-token file on the first server
+NODE_TOKEN=""
+# Match the first of the first server
+K3s_VERSION=""
+```
+
+Agent Systems
+```
+curl -sfL https://get.k3s.io | \
+	INSTALL_K3S_VERSION=${K3s_VERSION} \
+	INSTALL_K3S_SKIP_SELINUX_RPM=true \
+	K3S_URL=https://${FIRST_SERVER_IP}:6443 \
+	K3S_TOKEN=${NODE_TOKEN} \
+	K3S_KUBECONFIG_MODE="644" \
+	sh -
+```
