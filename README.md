@@ -46,7 +46,6 @@ Software, etc..
 * VPN connectivity to AWS Transit Gateway
 
 ![High Level Overview](./Images/High_Level_Overview.drawio.png)
-![K3s on vSphere](./Images/vSphere_Overview.drawio.png)
 
 ## References and Notes
 Some of this code brought to you by [Amazon Bedrock](https://aws.amazon.com/bedrock/) - specifically using [chat-cli](https://github.com/chat-cli/chat-cli) (Which I highly recommend - it's quite simple to get started)
