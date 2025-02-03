@@ -39,6 +39,7 @@ Software, etc..
 * VPN connectivity to AWS Transit Gateway
 
 ![High Level Overview](./Images/High_Level_Overview.drawio.png)
+![K3s on vSphere](./Images/vSphere_Overview.drawio.png)
 
 ## Narrative
 A number of the specific and opinionated items mentioned in this repo are actually quite flexible.  I have decided on a particular architecture and approach in order to make this a solution that absolutely works (tm), given that the guidance provided is followed.
