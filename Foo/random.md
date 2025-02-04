@@ -81,6 +81,7 @@ for MOD in $MODULES; do lsmod | grep $MOD || { insmod $MOD; } && { echo "$MOD fo
 ```
 
 ## Latest install method (x86 on VMWare guests)
+https://documentation.suse.com/trd/suse/html/kubernetes_ri_rancher-k3s-slemicro/id-deployment.html
 ### Install with embedded-etcd
 First System
 ```
@@ -94,11 +95,18 @@ curl -sfL https://get.k3s.io | \
 Second/Third System
 ```
 # Private IP preferred, if available
-FIRST_SERVER_IP=""
+export FIRST_SERVER_IP="10.10.12.181"
 # From /var/lib/rancher/k3s/server/node-token file on the first server
-NODE_TOKEN=""
+export NODE_TOKEN="K10d055e962fafd5871ed004000696035aa9fa8137f1c6e423d329804abc34363f6::server:bf62ae76e05e55d04d29c9624e3cdc1c"
 # Match the first of the first server
-K3s_VERSION=""
+export K3s_VERSION="v1.31"
+curl -sfL https://get.k3s.io | \
+	INSTALL_K3S_VERSION=${K3s_VERSION} \
+	INSTALL_K3S_SKIP_SELINUX_RPM=true \
+	K3S_URL=https://${FIRST_SERVER_IP}:6443 \
+	K3S_TOKEN=${NODE_TOKEN} \
+	K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC='server' \
+	sh -
 ```
 
 Agent Systems
