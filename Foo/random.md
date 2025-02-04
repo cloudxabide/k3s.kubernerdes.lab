@@ -78,6 +78,7 @@ sch_ingress
 ip_set
 cls_bpf"
 for MOD in $MODULES; do lsmod | grep $MOD || { insmod $MOD; } && { echo "$MOD found"; };  done
+```
 
 ## Latest install method (x86 on VMWare guests)
 ### Install with embedded-etcd
