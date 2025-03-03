@@ -52,6 +52,7 @@ ansible-playbook -l xavier-01.kubernerdes.lab -i inventories/kubernerdes.lab/hos
 ```bash
 ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "docker run --rm --runtime nvidia xift/jetson_devicequery:r32.5.0"
 ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "nvidia-container-runtime --version"
+
 ```
 
 ## Random Commands
@@ -61,12 +62,14 @@ ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "docker run --rm --
 
 
 ## Note
-nvidia-smi does not/will not run on the NVIDIA Jetson devices.
+nvidia-smi does not/will not run on the NVIDIA Jetson devices due to way the hardware is implemented.
 ```
 ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "nvidia-smi"
 sudo docker run --rm --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
 docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: nvidia-container-runtime did not terminate successfully: exit status 1: unknown.non-zero return code
 ```
+## List of playbooks
+<pre>
 configure_nvidia_power_mode.yml
 disable_ipv6.yml
 disable_swap.yml
@@ -86,5 +89,4 @@ update_docker_runtime_for_nvidia.yml
 update_etc_hosts.yml
 update_os.yml
 
-
-
+</pre>
