@@ -41,6 +41,7 @@ ansible-playbook -i inventories/kubernerdes.lab/hosts playbooks/disable_ipv6.yml
 ## Test Docker
 ```bash
 ansible -i inventories/kubernerdes.lab/hosts all -m shell -a "docker run --rm --runtime nvidia hello-world"
+```
 
 ## Run a specific command or playbook on specific nodes or group
 ```bash
